@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 
 class RoomsScreen extends React.Component {
   onRoomPress = () => {
@@ -10,7 +10,7 @@ class RoomsScreen extends React.Component {
     return (
       <TouchableOpacity
         key={index}
-        style={{padding: 20}}
+        style={styles.itemContainer}
         onPress={this.onRoomPress}>
         <Text>sdffgh</Text>
       </TouchableOpacity>
@@ -19,12 +19,31 @@ class RoomsScreen extends React.Component {
   render() {
     return (
       <FlatList
+        style={styles.itemContainer}
+        contentContainerStyle={styles.listContentContainer}
         data={[0, 1, 2, 34]}
+        ItemSeparatorComponent={() => (
+          <View style={{borderBottomWidth: StyleSheet.hairlineWidth}} />
+        )}
         renderItem={this.renderItem}
         keyExtractor={(item, index) => '' + index}
       />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  listContainer: {
+    backgroundColor: 'white',
+  },
+  listContentContainer: {
+    paddingBottom: 20,
+  },
+  itemContainer: {
+    marginHorizontal: 5,
+    padding: 20,
+    borderRadius: 10,
+  },
+});
 
 export default RoomsScreen;

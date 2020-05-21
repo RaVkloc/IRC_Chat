@@ -1,8 +1,17 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 
 class ChatScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <Button onPress={this.onRoomPress} title="Info" color="#fff" />
+      ),
+    });
+  }
   state = {
     messages: [],
   };
@@ -67,7 +76,7 @@ class ChatScreen extends React.Component {
 
   render() {
     return (
-      <View style={{width: '100%', flex: 1}}>
+      <View style={styles.container}>
         <GiftedChat
           isTyping
           messages={this.state.messages}
@@ -82,4 +91,11 @@ class ChatScreen extends React.Component {
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});
 export default ChatScreen;
