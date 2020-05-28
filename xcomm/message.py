@@ -30,7 +30,7 @@ class Message:
 
     # destination must be self.header or self.body
     def __parse_bytes(self, msg_bytes, destination):
-        for item in msg_bytes.split(DELIMITER_BYTE):
+        for item in filter(lambda x: len(x), msg_bytes.split(DELIMITER_BYTE)):
             splitted = item.decode().split(PARAM_VALUE_SEPARATOR)
             destination[splitted[0]] = splitted[1]
 
