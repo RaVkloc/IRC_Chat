@@ -5,7 +5,7 @@ from decorators import request_action
 from threads import RecvThread
 from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE, ERROR_KEY, PORT, IP
-from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
+from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH, MESSAGE_ACTIONLOGIN_Login, MESSAGE_ACTIONLOGIN_Password
 
 
 class Client:
@@ -37,4 +37,4 @@ class Connection:
 with Connection(ip=IP, port=PORT) as conn:
     recv_thread = RecvThread(conn.socket)
     recv_thread.run()
-    conn.client.login(body={"login": 'abc', "password": 'xyz'})
+

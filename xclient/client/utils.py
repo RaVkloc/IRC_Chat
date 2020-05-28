@@ -30,9 +30,8 @@ class Sender:
         try:
             body = kwargs.get('body')
             headers = BASE_HEADERS.update(kwargs.get('headers', {}))
-            if not headers:
-                headers = BASE_HEADERS
-            headers.update({'action': CLIENT_SEND_ACTIONS[f.__name__]})
+            headers = {}
+            headers.update({'Action': CLIENT_SEND_ACTIONS[f.__name__]})
             message = Message(header=headers, body=body)
             socket_ = f(*args, **kwargs)
             socket_.sendall(message.convert_message_to_bytes())

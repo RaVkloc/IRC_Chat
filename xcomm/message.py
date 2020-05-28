@@ -3,9 +3,9 @@ from xcomm.settings import DELIMITER_BYTE, DELIMITER_STR, PARAM_VALUE_SEPARATOR
 
 
 class Message:
-    def __init__(self, header={}, body={}):
-        self.header = header
-        self.body = body
+    def __init__(self, header=None, body=None):
+        self.header = {} if not header else header
+        self.body = {} if not body else body
 
     def set_header_bytes(self, header_bytes):
         self.__parse_bytes(header_bytes, self.header)

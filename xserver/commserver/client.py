@@ -44,7 +44,6 @@ class Client:
                 response = action.get_action_result()
                 self.client_socket.sendall(response.convert_message_to_bytes())
                 self.logger.debug(f"({self.client_address}) <- " + response.get_complete_message().replace("\0", "\n"))
-                print(self.message is response)
 
             # TODO: Serve case when no action was returned
             else:
