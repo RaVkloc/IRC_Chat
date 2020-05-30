@@ -10,8 +10,7 @@ from xcomm.xcomm_moduledefs import *
 class LoginAction(ActionBase):
 
     def __init__(self, message):
-        super().__init__()
-        self.msg = message
+        super().__init__(message)
 
     def get_action_number(self):
         return MESSAGE_ACTIONLOGIN_Code
