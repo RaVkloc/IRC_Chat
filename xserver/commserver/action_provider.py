@@ -1,5 +1,5 @@
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code
-from xserver.commserver.actions import LoginAction
+from xserver.commserver.action_login import LoginAction
 
 
 class ActionProvider:
