@@ -63,12 +63,12 @@ class LoginAction(ActionBase):
             self.error = True
             self.result = Message()
             self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code)
-            self.result.add_body_param(MESSAGE_CODE_INFORMATION, "Invalid username or password.")
+            self.result.add_body_param(MESSAGE_STATUS, "Invalid username or password.")
             return
 
         self.result = Message()
         self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code)
-        self.result.add_body_param(MESSAGE_CODE_INFORMATION, "OK")
+        self.result.add_body_param(MESSAGE_STATUS, "OK")
         token = str(uuid4())
 
         # Add user's token to database
