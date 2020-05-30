@@ -23,6 +23,10 @@ class CoreServer(object):
             self.__server_socket__.listen(SERVER_MAX_CONNECTION)
         except socket.error as err:
             self.logger.error(err)
+            # FIXME: We should do it better. Maybe ContextManager
+            self.__server_socket__.close()
+            exit(1)
+
         self.__run()
 
     def __init_logger(self):
