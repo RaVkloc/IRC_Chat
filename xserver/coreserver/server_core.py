@@ -40,8 +40,5 @@ class CoreServer(object):
             self.clients.append(new_client)
 
 
-serv = CoreServer()
-# logger = logging.getLogger("ServerCore")
-# fh = logging.FileHandler("../../server.log")
-# logger.addHandler(fh)
-# logger.error("adasdasdas")
+if __name__ == "__main__":
+    server = CoreServer()
