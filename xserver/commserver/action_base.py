@@ -17,10 +17,8 @@ class ActionBase:
     def execute(self):
         pass
 
-    @abstractmethod
     def get_action_result(self):
-        pass
+        return self.result
 
-    @abstractmethod
     def get_error(self):
-        pass
+        return self.error
