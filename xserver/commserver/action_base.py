@@ -4,9 +4,10 @@ from abc import abstractmethod
 class ActionBase:
     errors = {}
 
-    def __init__(self):
+    def __init__(self, message):
         self.result = None
         self.error = False
+        self.msg = message
 
     @abstractmethod
     def get_action_number(self):
