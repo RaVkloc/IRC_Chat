@@ -27,13 +27,13 @@ class LoginAction(ActionBase):
         # TODO: Add testing if connection is stable
         db_connection = dbconn.DatabaseConnection()
 
-        sql_query = "SELECT password FROM users_user WHERE username='{}'"
+        sql_query = "SELECT username, password FROM users_user WHERE username='{}'"
         db_connection.cursor.cursor.execute(sql_query.format(login))
         result = db_connection.cursor.cursor.fetchall()
 
         # empty means no such a user in DB
         # if hashes are not equals incorrect password was sent
-        if len(result) == 0 or result[2] != passwd:
+        if len(result) == 0 or result[0][1] != passwd:
             self.error = True
             self.result = Message()
             self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code)
@@ -42,7 +42,7 @@ class LoginAction(ActionBase):
 
         self.result = Message()
         self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code)
-        self.result.add_body_param(MESSAGE_STATUS, "OK")
+        self.result.add_body_param(MESSAGE_STATUS, MESSAGE_STATUS_OK)
         token = str(uuid4())
 
         # Add user's token to database
