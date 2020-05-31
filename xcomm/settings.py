@@ -3,7 +3,5 @@ DELIMITER_BYTE = b"\0"
 PARAM_VALUE_SEPARATOR = ":"
 
 IP = '127.0.0.1'
-PORT = 6017
+PORT = 1998
 ERROR_KEY = 'errors'
-
-
