@@ -2,6 +2,7 @@ import json
 import threading
 import time
 from _thread import start_new_thread
+from functools import reduce
 
 from xclient.client.actions import Response
 from xclient.client.connection import Connection
@@ -22,11 +23,12 @@ class Client:
         while True:
             message = self.connection.receive()
             response = Response(message)
-            self.token = response.get_token()
+            if not self.token:
+                self.token = response.get_token()
             self.handle_receive(message)
 
     @request_action()
-    def login(self, *args, **kwargs):
+    def login(self, login, password):
         return self.connection.socket, self.token
 
     @request_action()
@@ -34,7 +36,19 @@ class Client:
         return self.connection.socket, self.token
 
     @request_action()
+    def join_room(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
     def send_message(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
+    def create_room(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
+    def logout(self, *args, **kwargs):
         return self.connection.socket, self.token
 
     def handle_receive(self, message):
@@ -55,19 +69,31 @@ class TerminalClient(Client):
 
     def send(self, *args, **kwargs):
         while True:
-            action = input("Podaj nazwe akcji")
+            print("Wybierz jedną z akcji")
+            self.show_actions()
+            action = input("Podaj nazwe akcji: ")
             if action not in CLIENT_SEND_ACTIONS.keys():
                 continue
-            body = input("Podaj JSON do wyslania")
-            body = json.loads(body)
             method = getattr(self, action)
             if not method:
                 continue
+
+            body = input("Podaj JSON do wyslania: ")
+            body = json.loads(body)
+
             method(body=body)
 
-    def handle_receive(self, message):
-        print(message.body)
+    def handle_receive(self, response:Response):
+        print(response.message.body)
+
+    def show_actions(self):
+        print(" ".join(CLIENT_SEND_ACTIONS.keys()))
+
+    def ask_arguments(self, func):
+        body = {}
+        for arg in func.__code__.co_varnames:
+            body[arg.capitalize()] = input(f"Podaj {arg.capitalize()}: ")
+        return body
 
 
-class GUIClient(Client):
-    pass
+

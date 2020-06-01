@@ -9,7 +9,12 @@ from xcomm.settings import DELIMITER_BYTE
 class Reciver:
 
     @staticmethod
-    def recive_headers(s: socket.socket):
+    def receive_headers(s: socket.socket):
+        """
+        Method receive headers until dbl delimiter sign.
+        :param s: socket
+        :return: received headers
+        """
         headers = b''
         while True:
             if 2 * DELIMITER_BYTE in headers:
@@ -20,13 +25,20 @@ class Reciver:
         return headers
 
     @staticmethod
-    def recive_body(s: socket.socket, content_length):
+    def receive_body(s: socket.socket, content_length):
         return s.recv(int(content_length))
 
 
 class Sender:
     @staticmethod
     def send_message(f: types.FunctionType, *args, **kwargs):
+        """
+
+        :param f: request action
+        :param args:
+        :param kwargs: message content
+        :return:
+        """
         try:
             body = kwargs.get('body')
             headers = {}
