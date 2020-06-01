@@ -46,10 +46,10 @@ class LoginAction(ActionBase):
         token = str(uuid4())
 
         # Add user's token to database
-        sql_query_add_token = "UPDATE users_user SET token = '{}' WHERE id = {}"
+        sql_query_add_token = "UPDATE users_user SET token = '{}' WHERE username = '{}'"
         db_connection = dbconn.DatabaseConnection()
         db_connection.cursor.cursor.execute(sql_query_add_token.format(token, result[0][0]))
-        db_connection.cursor.cursor.connection.commit()
+        db_connection.cursor.connection.commit()
         self.result.add_body_param(MESSAGE_ACTIONLOGIN_Token, token)
 
     def get_error(self):
