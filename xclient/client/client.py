@@ -25,10 +25,10 @@ class Client:
             response = Response(message)
             if not self.token:
                 self.token = response.get_token()
-            self.handle_receive(message)
+            self.handle_receive(response)
 
     @request_action()
-    def login(self, login, password):
+    def login(self, *args, **kwargs):
         return self.connection.socket, self.token
 
     @request_action()
