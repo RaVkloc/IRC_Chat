@@ -1,5 +1,6 @@
 from xclient.client.client import TerminalClient
+from xserver.coreserver.coreserver_moduledefs import SERVER_ADDRESS, SERVER_PORT
 
 if __name__ == '__main__':
-    client = TerminalClient('127.0.0.1',1999)
+    client = TerminalClient(SERVER_ADDRESS,SERVER_PORT)
     client.start()
