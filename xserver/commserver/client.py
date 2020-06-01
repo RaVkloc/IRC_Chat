@@ -12,7 +12,6 @@ class Client:
     def __init__(self, client_socket, client_address):
         self.client_socket = client_socket
         self.client_address = client_address
-        self.unhandled_msg = False
         self.message = None
         self.logger = logging.getLogger("Client")
         recv_thread = threading.Thread(target=self.always_listen, daemon=True)
