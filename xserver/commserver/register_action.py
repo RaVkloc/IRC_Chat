@@ -9,7 +9,7 @@ from xserver.commserver.databaseconnection import DatabaseConnection
 from xserver.commserver.action_base import ActionBase
 
 
-class ActionRegister(ActionBase):
+class RegisterAction(ActionBase):
 
     def __init__(self, message):
         super().__init__(message)

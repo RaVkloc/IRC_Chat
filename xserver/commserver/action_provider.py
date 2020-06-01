@@ -1,11 +1,11 @@
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_ACTIONLOGIN_Code, MESSAGE_ACTIONREGISTER_Code
-from xserver.commserver.action_login import LoginAction
-from xserver.commserver.action_register import ActionRegister
+from xserver.commserver.login_action import LoginAction
+from xserver.commserver.register_action import RegisterAction
 
 
 class ActionProvider:
     action_dict = {MESSAGE_ACTIONLOGIN_Code: LoginAction,
-                   MESSAGE_ACTIONREGISTER_Code: ActionRegister}
+                   MESSAGE_ACTIONREGISTER_Code: RegisterAction}
 
     @staticmethod
     def get_action_for(message):
