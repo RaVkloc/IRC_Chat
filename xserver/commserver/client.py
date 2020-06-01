@@ -12,7 +12,6 @@ class Client:
     def __init__(self, client_socket, client_address):
         self.client_socket = client_socket
         self.client_address = client_address
-        self.unhandled_msg = False
         self.message = None
         self.logger = logging.getLogger("Client")
         recv_thread = threading.Thread(target=self.always_listen, daemon=True)
@@ -44,8 +43,3 @@ class Client:
                 response = action.get_action_result()
                 self.client_socket.sendall(response.convert_message_to_bytes())
                 self.logger.debug(f"({self.client_address}) <- " + response.get_complete_message().replace("\0", "\n"))
-                print(self.message is response)
-
-            # TODO: Serve case when no action was returned
-            else:
-                pass

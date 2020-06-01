@@ -3,9 +3,9 @@ from xcomm.settings import DELIMITER_BYTE, DELIMITER_STR, PARAM_VALUE_SEPARATOR
 
 
 class Message:
-    def __init__(self, header={}, body={}):
-        self.header = header
-        self.body = body
+    def __init__(self, header=None, body=None):
+        self.header = {} if not header else header
+        self.body = {} if not body else body
 
     def set_header_bytes(self, header_bytes):
         self.__parse_bytes(header_bytes, self.header)
@@ -39,9 +39,7 @@ class Message:
         for param, value in self.body.items():
             complete_body += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"
 
-        complete = ""
-        if MESSAGE_CONTENT_LENGTH not in self.header:
-            complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body)) + DELIMITER_STR
+        complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body)) + DELIMITER_STR
 
         for param, value in self.header.items():
             complete += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"

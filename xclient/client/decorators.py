@@ -1,5 +1,5 @@
 import threading
-from utils import Sender
+from xclient.client.utils import Sender
 
 
 def request_action():
