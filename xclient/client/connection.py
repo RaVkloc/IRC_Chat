@@ -24,9 +24,9 @@ class Connection:
 
     def receive(self):
         m = Message()
-        headers = Reciver.recive_headers(self.socket)
+        headers = Reciver.receive_headers(self.socket)
         m.set_header_bytes(headers)
         content_length = m.get_header_param(MESSAGE_CONTENT_LENGTH)
-        body = Reciver.recive_body(self.socket, content_length)
+        body = Reciver.receive_body(self.socket, content_length)
         m.set_body_bytes(body)
         return m

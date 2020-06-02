@@ -11,7 +11,7 @@ class Message:
         self.__parse_bytes(header_bytes, self.header)
 
     def get_header_param(self, param):
-        return self.header[param]
+        return self.header.get(param, "")
 
     def add_header_param(self, param, value):
         self.header[param] = value
@@ -20,7 +20,7 @@ class Message:
         self.__parse_bytes(body_bytes, self.body)
 
     def get_body_param(self, param):
-        return self.body[param]
+        return self.body.get(param, "")
 
     def add_body_param(self, param, value):
         self.body[param] = value
