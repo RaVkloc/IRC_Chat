@@ -1,7 +1,6 @@
-from xcomm.message import Message
 from xserver.commserver.action_base import ActionBase
 from xserver.commserver.databaseconnection import DatabaseConnection
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS, MESSAGE_STATUS_OK
+
 from xcomm.xcomm_moduledefs import MESSAGE_ACTIONNEWROOM_Code, MESSAGE_ACTIONNEWROOM_RoomName, \
     MESSAGE_ACTIONNEWROOM_UserToken
 
@@ -14,9 +13,6 @@ class NewRoomAction(ActionBase):
     def execute(self):
         room_name = self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_RoomName)
 
-        self.result = Message()
-        self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONNEWROOM_Code)
-
         try:
             user_id = self.__get_user_id_from_token(self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_UserToken))
             if not user_id:
@@ -24,6 +20,7 @@ class NewRoomAction(ActionBase):
                 return
         except:
             self.set_error_with_status("Unable to verify user token. Please try again.")
+            return
 
         try:
             if self.__check_if_room_exists(room_name):
@@ -39,7 +36,7 @@ class NewRoomAction(ActionBase):
             self.set_error_with_status("Unable to save changes.")
             return
 
-        self.result.add_body_param(MESSAGE_STATUS, MESSAGE_STATUS_OK)
+        self.set_status_ok()
 
     def __check_if_room_exists(self, name):
         db_connect = DatabaseConnection()

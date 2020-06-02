@@ -1,8 +1,6 @@
-from xcomm.message import Message
 from xserver.commserver.action_base import ActionBase
 from xserver.commserver.databaseconnection import DatabaseConnection
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS, MESSAGE_STATUS_OK
 from xcomm.xcomm_moduledefs import MESSAGE_ACTIONJOINROOM_Code, MESSAGE_ACTIONJOINROOM_RoomName, \
     MESSAGE_ACTIONJOINROOM_UserToken
 
@@ -15,8 +13,6 @@ class JoinRoomAction(ActionBase):
         return MESSAGE_ACTIONJOINROOM_Code
 
     def execute(self):
-        self.result = Message()
-        self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONJOINROOM_Code)
         token = self.msg.get_body_param(MESSAGE_ACTIONJOINROOM_UserToken)
 
         try:
@@ -44,7 +40,7 @@ class JoinRoomAction(ActionBase):
             self.set_error_with_status("Unable to change room. Try again later.")
             return
 
-        self.result.get_body_param(MESSAGE_STATUS, MESSAGE_STATUS_OK)
+        self.set_status_ok()
 
     def __get_user_id_from_token(self, token):
         if not token:
@@ -54,11 +50,7 @@ class JoinRoomAction(ActionBase):
         query = "SELECT id FROM users_user WHERE token = '{}'"
 
         db_connect.cursor.cursor.execute(query.format(token))
-        result = db_connect.cursor.cursor.fetchone()
-        if len(result) != 0:
-            return result[0]
-        else:
-            return None
+        return db_connect.cursor.cursor.fetchone()
 
     def __get_room_id_from_name(self, room_name):
         if not room_name:
@@ -68,11 +60,7 @@ class JoinRoomAction(ActionBase):
         query = "SELECT id FROM chats_room where name='{}'"
 
         db_connect.cursor.cursor.execute(query.format(room_name))
-        result = db_connect.cursor.cursor.fetchone()
-        if len(result) != 0:
-            return result[0]
-        else:
-            return None
+        return db_connect.cursor.cursor.fetchone()
 
     def __update_user_room(self, user_id, room_id):
         db_conn = DatabaseConnection()

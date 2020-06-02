@@ -1,10 +1,8 @@
 import hashlib
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS, MESSAGE_STATUS_OK
 from xcomm.xcomm_moduledefs import MESSAGE_ACTIONREGISTER_Code, MESSAGE_ACTIONREGISTER_Login, \
     MESSAGE_ACTIONREGISTER_Password
 
-from xcomm.message import Message
 from xserver.commserver.databaseconnection import DatabaseConnection
 from xserver.commserver.action_base import ActionBase
 
@@ -20,34 +18,49 @@ class RegisterAction(ActionBase):
     def execute(self):
         username = self.msg.get_body_param(MESSAGE_ACTIONREGISTER_Login)
         password = self.msg.get_body_param(MESSAGE_ACTIONREGISTER_Password)
-        db_connect = DatabaseConnection()
-
-        self.result = Message()
-        self.result.add_header_param(MESSAGE_ACTION, MESSAGE_ACTIONREGISTER_Code)
 
         # Check if user with such nick does not already exists
-        query = f"SELECT * FROM users_user WHERE username='{username}'"
-        db_connect.cursor.cursor.execute(query)
-        if len(db_connect.cursor.cursor.fetchall()) != 0:
-            self.error = True
-            self.result.add_body_param(MESSAGE_STATUS, "Given username is already taken. Please try another one.")
-            return
+        try:
+            if not self.__is_username_unique(username):
+                self.set_error_with_status("Given username is already taken. Please try another one.")
+                return
+        except:
+            self.set_error_with_status("Unable to check username's uniqueness. Try again later.")
 
         if not self.__validate_password(password):
-            self.error = True
-            self.result.add_body_param(MESSAGE_STATUS, "To weak password, minimum length = 6.")
+            self.set_error_with_status("To weak password. Minimum length = 6.")
             return
 
-        query = "INSERT INTO users_user (username, password) VALUES ('{}', '{}')"
-        hash_sha = hashlib.sha3_256()
-        hash_sha.update(password.encode())
-        db_connect.cursor.cursor.execute(query.format(username,
-                                                      hash_sha.hexdigest()))
-        db_connect.cursor.connection.commit()
-        self.result.add_body_param(MESSAGE_STATUS, MESSAGE_STATUS_OK)
+        try:
+            self.__insert_new_user_to_db(username, password)
+        except:
+            self.set_error_with_status("Unable to save new user. Try again later.")
+
+        self.set_status_ok()
+
+    def __is_username_unique(self, username):
+        db_conn = DatabaseConnection()
+        query = f"SELECT * FROM users_user WHERE username='{username}'"
+
+        db_conn.cursor.cursor.execute(query)
+        return db_conn.cursor.cursor.fetchone() is None
 
     def __validate_password(self, passwd):
         if len(passwd) > 5:
             return True
         else:
             return False
+
+    def __get_user_password_hash(self, password):
+        hash_alg = hashlib.sha3_256()
+        hash_alg.update(password.encode())
+        return hash_alg.hexdigest()
+
+    def __insert_new_user_to_db(self, username, password):
+        db_conn = DatabaseConnection()
+        query = "INSERT INTO users_user (username, password) VALUES ('{}', '{}')"
+
+        hash_pass = self.__get_user_password_hash(password)
+
+        db_conn.cursor.cursor.execute(query.format(username, hash_pass))
+        db_conn.cursor.connection.commit()
