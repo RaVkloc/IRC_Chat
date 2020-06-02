@@ -1,18 +1,18 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABCMeta
 
 from xcomm.message import Message
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS, MESSAGE_STATUS_OK
 
 
-class ActionBase:
+class ActionBase(metaclass=ABCMeta):
     errors = {}
 
     def __init__(self, message):
         self.result = Message()
         self.error = False
         self.msg = message
-
+        self.user = None
         self.set_basic_params()
 
     def set_basic_params(self):
@@ -23,7 +23,7 @@ class ActionBase:
         pass
 
     @abstractmethod
-    def execute(self):
+    def execute(self,*args,**kwargs):
         pass
 
     def set_error_with_status(self, status):

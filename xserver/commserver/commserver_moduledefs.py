@@ -4,4 +4,4 @@ DATABASE_CREDENTIAL = {'database': 'chat',
                        'host': '51.38.191.101',
                        # 'PORT': '3306'
                        }
-RECEIVE_BYTES_LIMIT = 5
+RECEIVE_BYTES_LIMIT = 1

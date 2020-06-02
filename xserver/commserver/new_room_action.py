@@ -3,6 +3,7 @@ from xserver.commserver.databaseconnection import DatabaseConnection
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTIONNEWROOM_Code, MESSAGE_ACTIONNEWROOM_RoomName, \
     MESSAGE_ACTIONNEWROOM_UserToken
+from xserver.commserver.decorators import login_required
 
 
 class NewRoomAction(ActionBase):
@@ -10,6 +11,7 @@ class NewRoomAction(ActionBase):
     def get_action_number(self):
         return MESSAGE_ACTIONNEWROOM_Code
 
+    @login_required
     def execute(self):
         room_name = self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_RoomName)
 
