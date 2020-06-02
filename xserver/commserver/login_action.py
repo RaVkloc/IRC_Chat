@@ -27,8 +27,8 @@ class LoginAction(ActionBase):
         # TODO: Add testing if connection is stable
         db_connection = dbconn.DatabaseConnection()
 
-        sql_query = "SELECT username, password FROM users_user WHERE username='{}'"
-        db_connection.cursor.cursor.execute(sql_query.format(login))
+        sql_query = "SELECT `username`, `password` FROM `users_user` WHERE `username` = %s"
+        db_connection.cursor.cursor.execute(sql_query, (login,))
         result = db_connection.cursor.cursor.fetchall()
 
         # empty means no such a user in DB
