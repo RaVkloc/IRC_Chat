@@ -36,7 +36,7 @@ class LoginAction(ActionBase):
 
         token = str(uuid4())
         try:
-            self.__add_user_token_to_db(result[0][0], token)
+            self.__add_user_token_to_db(result[0], token)
         except:
             self.set_error_with_status("Unable to update user's token. Try again later.")
             return
