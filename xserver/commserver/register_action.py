@@ -1,7 +1,7 @@
 import hashlib
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTIONREGISTER_Code, MESSAGE_ACTIONREGISTER_Login, \
-    MESSAGE_ACTIONREGISTER_Password
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_REGISTER_LOGIN, \
+    MESSAGE_ACTION_REGISTER_PASSWORD
 
 from xserver.commserver.databaseconnection import DatabaseConnection
 from xserver.commserver.action_base import ActionBase
@@ -13,11 +13,11 @@ class RegisterAction(ActionBase):
         super().__init__(message)
 
     def get_action_number(self):
-        return MESSAGE_ACTIONREGISTER_Code
+        return MESSAGE_ACTION_REGISTER_CODE
 
     def execute(self):
-        username = self.msg.get_body_param(MESSAGE_ACTIONREGISTER_Login)
-        password = self.msg.get_body_param(MESSAGE_ACTIONREGISTER_Password)
+        username = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_LOGIN)
+        password = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_PASSWORD)
 
         # Check if user with such nick does not already exists
         try:

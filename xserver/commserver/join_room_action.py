@@ -1,70 +1,46 @@
 from xserver.commserver.action_base import ActionBase
 from xserver.commserver.databaseconnection import DatabaseConnection
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTIONJOINROOM_Code, MESSAGE_ACTIONJOINROOM_RoomName, \
-    MESSAGE_ACTIONJOINROOM_UserToken
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_JOIN_ROOM_CODE, MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME
+from xserver.commserver.decorators import login_required
+from xserver.commserver.exceptions import InvalidRoom, ChangeRoomException
 
 
 class JoinRoomAction(ActionBase):
-    def __init__(self, message):
-        super().__init__(message)
 
     def get_action_number(self):
-        return MESSAGE_ACTIONJOINROOM_Code
+        return MESSAGE_ACTION_JOIN_ROOM_CODE
 
+    @login_required
     def execute(self):
-        token = self.msg.get_body_param(MESSAGE_ACTIONJOINROOM_UserToken)
-
-        try:
-            user_id = self.__get_user_id_from_token(token)
-            if not user_id:
-                self.set_error_with_status("Invalid user token.")
+        with self.db_connect as cursor:
+            try:
+                room_name = self.msg.get_body_param(MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME)
+                room_id = self._get_room_id_from_name(room_name)
+            except InvalidRoom as e:
+                self.set_error_with_status(e.message)
                 return
-        except:
-            self.set_error_with_status("Unable to verify user token. Please try again.")
-            return
+            if not room_id:
+                self.set_error_with_status("Invalid room's name.")
+                return
+            try:
+                self._update_user_room(self.user, room_id)
+            except ChangeRoomException as e:
+                self.set_error_with_status(e.message)
+                return
 
-        try:
-            room_name = self.msg.get_body_param(MESSAGE_ACTIONJOINROOM_RoomName)
-            room_id = self.__get_room_id_from_name(room_name)
-        except:
-            self.set_error_with_status("Unable to get room's id. Try again later.")
-            return
+            self.set_status_ok()
 
-        if not room_id:
-            self.set_error_with_status("Invalid room's name.")
-            return
-        try:
-            self.__update_user_room(user_id, room_id)
-        except:
-            self.set_error_with_status("Unable to change room. Try again later.")
-            return
-
-        self.set_status_ok()
-
-    def __get_user_id_from_token(self, token):
-        if not token:
-            return
-
-        db_connect = DatabaseConnection()
-        query = "SELECT id FROM users_user WHERE token = '{}'"
-
-        db_connect.cursor.cursor.execute(query.format(token))
-        return db_connect.cursor.cursor.fetchone()
-
-    def __get_room_id_from_name(self, room_name):
+    def _get_room_id_from_name(self, room_name, cursor):
         if not room_name:
             return
-
-        db_connect = DatabaseConnection()
         query = "SELECT id FROM chats_room where name='{}'"
 
-        db_connect.cursor.cursor.execute(query.format(room_name))
-        return db_connect.cursor.cursor.fetchone()
+        cursor.execute(query.format(room_name))
+        return cursor.fetchone()
 
-    def __update_user_room(self, user_id, room_id):
-        db_conn = DatabaseConnection()
+    def _update_user_room(self, user_id, room_id, cursor):
         query = "UPDATE users_user SET room_id_id = {} WHERE id = {}"
 
-        db_conn.cursor.cursor.execute(query.format(room_id, user_id))
-        db_conn.cursor.connection.commit()
+        cursor.execute(query.format(room_id, user_id))
+        cursor.connection.commit()

@@ -3,6 +3,7 @@ from abc import abstractmethod, ABCMeta
 from xcomm.message import Message
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS, MESSAGE_STATUS_OK
+from xserver.commserver.databaseconnection import DatabaseConnection
 
 
 class ActionBase(metaclass=ABCMeta):
@@ -14,6 +15,7 @@ class ActionBase(metaclass=ABCMeta):
         self.msg = message
         self.user = None
         self.set_basic_params()
+        self.db_connect = DatabaseConnection()
 
     def set_basic_params(self):
         self.result.add_header_param(MESSAGE_ACTION, self.get_action_number())

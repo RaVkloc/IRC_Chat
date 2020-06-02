@@ -1,22 +1,22 @@
 from xserver.commserver.action_base import ActionBase
 from xserver.commserver.databaseconnection import DatabaseConnection
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTIONNEWROOM_Code, MESSAGE_ACTIONNEWROOM_RoomName, \
-    MESSAGE_ACTIONNEWROOM_UserToken
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_NEW_ROOM_CODE, MESSAGE_ACTION_NEW_ROOM_ROOM_NAME, \
+    MESSAGE_ACTION_NEW_ROOM_USER_TOKEN
 from xserver.commserver.decorators import login_required
 
 
 class NewRoomAction(ActionBase):
 
     def get_action_number(self):
-        return MESSAGE_ACTIONNEWROOM_Code
+        return MESSAGE_ACTION_NEW_ROOM_CODE
 
     @login_required
     def execute(self):
-        room_name = self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_RoomName)
+        room_name = self.msg.get_body_param(MESSAGE_ACTION_NEW_ROOM_ROOM_NAME)
 
         try:
-            user_id = self.__get_user_id_from_token(self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_UserToken))
+            user_id = self.__get_user_id_from_token(self.msg.get_body_param(MESSAGE_ACTION_NEW_ROOM_USER_TOKEN))
             if not user_id:
                 self.set_error_with_status("Invalid user token.")
                 return
