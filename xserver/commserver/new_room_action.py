@@ -20,30 +20,26 @@ class NewRoomAction(ActionBase):
         try:
             user_id = self.__get_user_id_from_token(self.msg.get_body_param(MESSAGE_ACTIONNEWROOM_UserToken))
             if not user_id:
-                self.__set_error_with_status("Invalid user token.")
+                self.set_error_with_status("Invalid user token.")
                 return
         except:
-            self.__set_error_with_status("Unable to verify user token. Please try again.")
+            self.set_error_with_status("Unable to verify user token. Please try again.")
 
         try:
             if self.__check_if_room_exists(room_name):
-                self.__set_error_with_status("A room with the same name already exists. Try another name.")
+                self.set_error_with_status("A room with the same name already exists. Try another name.")
                 return
         except:
-            self.__set_error_with_status("Can not check uniqueness of room's name.")
+            self.set_error_with_status("Can not check uniqueness of room's name.")
             return
 
         try:
             self.__add_room_to_db(room_name, user_id)
         except:
-            self.__set_error_with_status("Unable to save changes.")
+            self.set_error_with_status("Unable to save changes.")
             return
 
         self.result.add_body_param(MESSAGE_STATUS, MESSAGE_STATUS_OK)
-
-    def __set_error_with_status(self, status):
-        self.error = True
-        self.result.add_body_param(MESSAGE_STATUS, status)
 
     def __check_if_room_exists(self, name):
         db_connect = DatabaseConnection()
