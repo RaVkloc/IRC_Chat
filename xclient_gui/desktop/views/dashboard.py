@@ -1,7 +1,6 @@
-import sys
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QLineEdit, QGridLayout, QMessageBox)
-from xclient_gui.desktop.views.dashboard.components.spliter import Splitter
+from PyQt5.QtWidgets import (QWidget, QGridLayout)
+from xclient_gui.desktop.views.components.spliter import Splitter
 
 
 class Dashboard(QWidget):

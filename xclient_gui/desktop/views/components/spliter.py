@@ -1,10 +1,7 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QApplication, QWidget, QFrame, QLineEdit, QHBoxLayout, QSplitter
-import sys
+from PyQt5.QtWidgets import QWidget, QFrame, QHBoxLayout, QSplitter
 from PyQt5.QtCore import Qt
-from xclient_gui.desktop.views.dashboard.components.tree import Tree
-from xclient_gui.desktop.views.dashboard.components.chat import Chat
-import time
+from xclient_gui.desktop.views.components.tree import Tree
+from xclient_gui.desktop.views.components.chat import Chat
 
 
 class Splitter(QWidget):

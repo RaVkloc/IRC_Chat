@@ -1,8 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QListWidget, QMessageBox, QListView, QVBoxLayout, QCheckBox, QWidget, QLabel, QLineEdit, \
-    QFrame, QSplitter
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QFrame
 
-from xclient_gui.desktop.views.dashboard.components.tree import Tree
+from xclient_gui.desktop.views.components.tree import Tree
 
 
 class Chat(QWidget):
