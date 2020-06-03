@@ -1,23 +1,34 @@
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QGridLayout)
+from PyQt5.QtWidgets import (QApplication)
 import sys
-from xclient_gui.desktop.views.dashboard.dashboard import Dashboard
-from xclient_gui.desktop.views.login import LoginForm
+import threading
+
+from xclient_gui.desktop.controllers.connection import GUIClient
 from xclient_gui.desktop.controllers.navigation import ScreenController
+from xserver.coreserver.coreserver_moduledefs import SERVER_ADDRESS, SERVER_PORT
 
 
-def main():
-    app = QApplication(sys.argv)
-    window = QMainWindow()
+class GUI:
+    def __init__(self):
+        self.client = None
+        self.app = None
+        self.controller = None
 
-    window.setCentralWidget(LoginForm())
-    window.show()
-    # window.setLayout(layout)
+    def start_client(self):
+        self.client = GUIClient(SERVER_ADDRESS, SERVER_PORT)
+        thread_gui = threading.Thread(target=self.client.start, daemon=True)
+        thread_gui.start()
 
-    # controller = ScreenController()
-    # controller.show_login()
+    def start_gui(self):
+        self.app = QApplication(sys.argv)
+        self.controller = ScreenController(self.client)
+        self.controller.show_login()
+        sys.exit(self.app.exec_())
 
-    sys.exit(app.exec_())
+    def start(self):
+        self.start_client()
+        self.start_gui()
 
 
 if __name__ == '__main__':
-    main()
+    main = GUI()
+    main.start()
