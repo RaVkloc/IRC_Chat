@@ -3,9 +3,8 @@ import hashlib
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_REGISTER_LOGIN, \
     MESSAGE_ACTION_REGISTER_PASSWORD
 
-from xserver.commserver.databaseconnection import DatabaseConnection
-from xserver.commserver.action_base import ActionBase
-from xserver.commserver.exceptions import UniqueUsernameException, ValidationPasswordException
+from xserver.actionsserver.action_base import ActionBase
+from xserver.actionsserver.exceptions import UniqueUsernameException, ValidationPasswordException
 
 
 class RegisterAction(ActionBase):
@@ -23,16 +22,16 @@ class RegisterAction(ActionBase):
         # Check if user with such nick does not already exists
         with self.db_connect as cursor:
             try:
-                self._is_username_unique(username,cursor)
+                self._is_username_unique(username, cursor)
                 self._validate_password(password)
-                self._insert_new_user_to_db(username,password,cursor)
-            except (UniqueUsernameException,ValidationPasswordException) as e:
+                self._insert_new_user_to_db(username, password, cursor)
+            except (UniqueUsernameException, ValidationPasswordException) as e:
                 self.set_error_with_status(e.message)
                 return
 
         self.set_status_ok()
 
-    def _is_username_unique(self, username,cursor):
+    def _is_username_unique(self, username, cursor):
         query = f"SELECT * FROM users_user WHERE username='{username}'"
 
         cursor.execute(query)
@@ -50,7 +49,7 @@ class RegisterAction(ActionBase):
         hash_alg.update(password.encode())
         return hash_alg.hexdigest()
 
-    def _insert_new_user_to_db(self, username, password,cursor):
+    def _insert_new_user_to_db(self, username, password, cursor):
         query = "INSERT INTO users_user (username, password) VALUES ('{}', '{}')"
 
         hash_pass = self._get_user_password_hash(password)

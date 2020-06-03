@@ -1,10 +1,10 @@
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_ACTION_LOGIN_CODE, MESSAGE_ACTION_REGISTER_CODE, \
     MESSAGE_ACTION_NEW_ROOM_CODE, MESSAGE_ACTION_JOIN_ROOM_CODE
-from xserver.commserver.login_action import LoginAction
-from xserver.commserver.register_action import RegisterAction
-from xserver.commserver.new_room_action import NewRoomAction
-from xserver.commserver.join_room_action import JoinRoomAction
-from xserver.commserver.unsupported_action import UnsupportedAction
+from xserver.actionsserver.login_action import LoginAction
+from xserver.actionsserver.register_action import RegisterAction
+from xserver.actionsserver.new_room_action import NewRoomAction
+from xserver.actionsserver.join_room_action import JoinRoomAction
+from xserver.actionsserver.unsupported_action import UnsupportedAction
 
 
 class ActionProvider:

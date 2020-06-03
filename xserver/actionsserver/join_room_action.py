@@ -1,9 +1,8 @@
-from xserver.commserver.action_base import ActionBase
-from xserver.commserver.databaseconnection import DatabaseConnection
+from xserver.actionsserver.action_base import ActionBase
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_JOIN_ROOM_CODE, MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME
-from xserver.commserver.decorators import login_required
-from xserver.commserver.exceptions import InvalidRoom, ChangeRoomException
+from xserver.actionsserver.decorators import login_required
+from xserver.actionsserver.exceptions import InvalidRoom, ChangeRoomException
 
 
 class JoinRoomAction(ActionBase):
@@ -16,7 +15,7 @@ class JoinRoomAction(ActionBase):
         with self.db_connect as cursor:
             try:
                 room_name = self.msg.get_body_param(MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME)
-                room_id = self._get_room_id_from_name(room_name)
+                room_id = self._get_room_id_from_name(room_name, cursor)
             except InvalidRoom as e:
                 self.set_error_with_status(e.message)
                 return
@@ -24,7 +23,7 @@ class JoinRoomAction(ActionBase):
                 self.set_error_with_status("Invalid room's name.")
                 return
             try:
-                self._update_user_room(self.user, room_id)
+                self._update_user_room(self.user, room_id, cursor)
             except ChangeRoomException as e:
                 self.set_error_with_status(e.message)
                 return

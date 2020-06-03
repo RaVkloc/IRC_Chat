@@ -1,10 +1,9 @@
 import hashlib
 from uuid import uuid4
 
-from xserver.commserver.databaseconnection import DatabaseConnection
-from xserver.commserver.action_base import ActionBase
+from xserver.actionsserver.action_base import ActionBase
 from xcomm.xcomm_moduledefs import *
-from xserver.commserver.exceptions import InvalidLoginData, InvalidTokenSave
+from xserver.actionsserver.exceptions import InvalidLoginData, InvalidTokenSave
 
 
 class LoginAction(ActionBase):
@@ -38,7 +37,7 @@ class LoginAction(ActionBase):
 
             token = str(uuid4())
             try:
-                self._add_user_token_to_db(result[0], token,cursor)
+                self._add_user_token_to_db(result[0], token, cursor)
             except InvalidTokenSave as e:
                 self.set_error_with_status(e.message)
                 return
@@ -58,7 +57,7 @@ class LoginAction(ActionBase):
         cursor.execute(query, (login,))
         return cursor.fetchone()
 
-    def _add_user_token_to_db(self, username, user_token,cursor):
+    def _add_user_token_to_db(self, username, user_token, cursor):
         sql_query_add_token = "UPDATE users_user SET token = '{}' WHERE username = '{}'"
 
         cursor.execute(sql_query_add_token.format(user_token, username))

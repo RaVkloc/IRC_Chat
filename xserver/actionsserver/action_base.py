@@ -25,7 +25,7 @@ class ActionBase(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def execute(self,*args,**kwargs):
+    def execute(self, *args, **kwargs):
         pass
 
     def set_error_with_status(self, status):

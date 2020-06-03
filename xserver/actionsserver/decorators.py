@@ -1,6 +1,5 @@
-from xcomm.message import Message
 from xserver.commserver.databaseconnection import DatabaseConnection
-from xserver.commserver.settings import TOKEN_KEY, AUTHENTICATION_ERROR
+from xserver.actionsserver.settings import TOKEN_KEY, AUTHENTICATION_ERROR
 
 
 def login_required(f):
@@ -19,4 +18,5 @@ def login_required(f):
             return
         self.user = user[0]
         return f(self)
+
     return inner
