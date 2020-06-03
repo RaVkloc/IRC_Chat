@@ -1,5 +1,5 @@
-class UniqueUsername(Exception):
-    message = ''
+class UniqueUsernameException(Exception):
+    message = "Given username is already taken. Please try another one."
 
 
 class UnavailableRoom(Exception):
@@ -20,3 +20,7 @@ class InvalidLoginData(Exception):
 
 class InvalidTokenSave(Exception):
     message = "Unable to update user's token. Try again later."
+
+
+class ValidationPasswordException(Exception):
+    message = "To weak password. Minimum length = 6."

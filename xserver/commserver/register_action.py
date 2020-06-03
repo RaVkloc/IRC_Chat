@@ -5,6 +5,7 @@ from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_
 
 from xserver.commserver.databaseconnection import DatabaseConnection
 from xserver.commserver.action_base import ActionBase
+from xserver.commserver.exceptions import UniqueUsernameException, ValidationPasswordException
 
 
 class RegisterAction(ActionBase):
@@ -21,46 +22,39 @@ class RegisterAction(ActionBase):
 
         # Check if user with such nick does not already exists
         try:
-            if not self.__is_username_unique(username):
-                self.set_error_with_status("Given username is already taken. Please try another one.")
-                return
-        except:
-            self.set_error_with_status("Unable to check username's uniqueness. Try again later.")
-
-        if not self.__validate_password(password):
-            self.set_error_with_status("To weak password. Minimum length = 6.")
+            self._is_username_unique(username)
+            self._validate_password(password)
+            self._insert_new_user_to_db(username,password)
+        except (UniqueUsernameException,ValidationPasswordException) as e:
+            self.set_error_with_status(e.message)
             return
-
-        try:
-            self.__insert_new_user_to_db(username, password)
-        except:
-            self.set_error_with_status("Unable to save new user. Try again later.")
 
         self.set_status_ok()
 
-    def __is_username_unique(self, username):
+    def _is_username_unique(self, username):
         db_conn = DatabaseConnection()
         query = f"SELECT * FROM users_user WHERE username='{username}'"
 
         db_conn.cursor.cursor.execute(query)
+        if db_conn.cursor.cursor.fetchone():
+            raise UniqueUsernameException()
         return db_conn.cursor.cursor.fetchone() is None
 
-    def __validate_password(self, passwd):
+    def _validate_password(self, passwd):
         if len(passwd) > 5:
             return True
-        else:
-            return False
+        raise ValidationPasswordException()
 
-    def __get_user_password_hash(self, password):
+    def _get_user_password_hash(self, password):
         hash_alg = hashlib.sha3_256()
         hash_alg.update(password.encode())
         return hash_alg.hexdigest()
 
-    def __insert_new_user_to_db(self, username, password):
+    def _insert_new_user_to_db(self, username, password):
         db_conn = DatabaseConnection()
         query = "INSERT INTO users_user (username, password) VALUES ('{}', '{}')"
 
-        hash_pass = self.__get_user_password_hash(password)
+        hash_pass = self._get_user_password_hash(password)
 
         db_conn.cursor.cursor.execute(query.format(username, hash_pass))
         db_conn.cursor.connection.commit()
