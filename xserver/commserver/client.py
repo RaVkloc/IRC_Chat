@@ -5,7 +5,7 @@ from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
 from xserver.commserver.commserver_moduledefs import RECEIVE_BYTES_LIMIT
-from xserver.commserver.action_provider import ActionProvider
+from xserver.actionsserver.action_provider import ActionProvider
 
 
 class Client:

@@ -1,4 +1,4 @@
-from xserver.commserver.action_base import ActionBase
+from xserver.actionsserver.action_base import ActionBase
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION, MESSAGE_STATUS
 

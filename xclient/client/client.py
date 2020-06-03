@@ -40,11 +40,19 @@ class Client:
         return self.connection.socket, self.token
 
     @request_action()
+    def leave_room(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
     def send_message(self, *args, **kwargs):
         return self.connection.socket, self.token
 
     @request_action()
     def create_room(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
+    def list_rooms(self, *args, **kwargs):
         return self.connection.socket, self.token
 
     @request_action()
