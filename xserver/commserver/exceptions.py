@@ -24,3 +24,7 @@ class InvalidTokenSave(Exception):
 
 class ValidationPasswordException(Exception):
     message = "To weak password. Minimum length = 6."
+
+
+class UniqueRoomException(Exception):
+    message = "A room with the same name already exists. Try another name."
