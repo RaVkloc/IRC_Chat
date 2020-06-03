@@ -1,7 +1,15 @@
+from PyQt5.QtWidgets import QMessageBox
+
 from xclient_gui.desktop.controllers.clientMediator import Mediator
 
 
 class BaseWidget:
+    @staticmethod
+    def show_error_box(message):
+        msg = QMessageBox()
+        msg.setText(message)
+        msg.exec_()
+
     def __init__(self):
         self.slot = None
 
