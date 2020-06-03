@@ -21,24 +21,24 @@ class RegisterAction(ActionBase):
         password = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_PASSWORD)
 
         # Check if user with such nick does not already exists
-        try:
-            self._is_username_unique(username)
-            self._validate_password(password)
-            self._insert_new_user_to_db(username,password)
-        except (UniqueUsernameException,ValidationPasswordException) as e:
-            self.set_error_with_status(e.message)
-            return
+        with self.db_connect as cursor:
+            try:
+                self._is_username_unique(username,cursor)
+                self._validate_password(password)
+                self._insert_new_user_to_db(username,password,cursor)
+            except (UniqueUsernameException,ValidationPasswordException) as e:
+                self.set_error_with_status(e.message)
+                return
 
         self.set_status_ok()
 
-    def _is_username_unique(self, username):
-        db_conn = DatabaseConnection()
+    def _is_username_unique(self, username,cursor):
         query = f"SELECT * FROM users_user WHERE username='{username}'"
 
-        db_conn.cursor.cursor.execute(query)
-        if db_conn.cursor.cursor.fetchone():
+        cursor.execute(query)
+        if cursor.fetchone():
             raise UniqueUsernameException()
-        return db_conn.cursor.cursor.fetchone() is None
+        return cursor.fetchone() is None
 
     def _validate_password(self, passwd):
         if len(passwd) > 5:
@@ -50,11 +50,10 @@ class RegisterAction(ActionBase):
         hash_alg.update(password.encode())
         return hash_alg.hexdigest()
 
-    def _insert_new_user_to_db(self, username, password):
-        db_conn = DatabaseConnection()
+    def _insert_new_user_to_db(self, username, password,cursor):
         query = "INSERT INTO users_user (username, password) VALUES ('{}', '{}')"
 
         hash_pass = self._get_user_password_hash(password)
 
-        db_conn.cursor.cursor.execute(query.format(username, hash_pass))
-        db_conn.cursor.connection.commit()
+        cursor.execute(query.format(username, hash_pass))
+        self.db_connect.connection.commit()

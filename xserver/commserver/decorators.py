@@ -18,5 +18,5 @@ def login_required(f):
             self.set_error_with_status(AUTHENTICATION_ERROR)
             return
         self.user = user[0]
-        return f()
+        return f(self)
     return inner

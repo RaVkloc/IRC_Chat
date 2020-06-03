@@ -38,7 +38,7 @@ class LoginAction(ActionBase):
 
             token = str(uuid4())
             try:
-                self._add_user_token_to_db(result[0], token)
+                self._add_user_token_to_db(result[0], token,cursor)
             except InvalidTokenSave as e:
                 self.set_error_with_status(e.message)
                 return
@@ -62,4 +62,4 @@ class LoginAction(ActionBase):
         sql_query_add_token = "UPDATE users_user SET token = '{}' WHERE username = '{}'"
 
         cursor.execute(sql_query_add_token.format(user_token, username))
-        cursor.connection.commit()
+        self.db_connect.connection.commit()
