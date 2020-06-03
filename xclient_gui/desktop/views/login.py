@@ -1,9 +1,9 @@
-import sys
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout, QMessageBox)
-from xclient_gui.desktop.controllers.clientMediator import Mediator
+
 from xclient_gui.desktop.views.components.formInput import FormInput
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LOGIN_LOGIN, MESSAGE_ACTION_LOGIN_PASSWORD
 
 
 class LoginForm(QWidget, BaseWidget):
@@ -23,9 +23,7 @@ class LoginForm(QWidget, BaseWidget):
         if status == 'OK':
             self.open_next_screen.emit()
         else:
-            msg = QMessageBox()
-            msg.setText(status)
-            msg.exec_()
+            self.show_error_box(status)
 
     def create_gui(self):
         self.set_widget_default_values()
@@ -64,19 +62,18 @@ class LoginForm(QWidget, BaseWidget):
 
     def create_register_encouragement(self, layout):
         register = QPushButton("Don't have account? REGISTER")
-        register.clicked.connect(self.asd)
+        register.clicked.connect(self.show_register_screen)
         register.setStyleSheet("font-size: 9px;")
         layout.addWidget(register, 3, 2, 1, 2)
 
-    def asd(self):
-        print("dsfsdd")
+    def show_register_screen(self):
         self.open_registration.emit()
 
     def login(self):
         login = self.lineEdit_username.text()
         password = self.lineEdit_password.text()
         body = {
-            "login": login,
-            "password": password
+            MESSAGE_ACTION_LOGIN_LOGIN: login,
+            MESSAGE_ACTION_LOGIN_PASSWORD: password
         }
         self.client.login(body=body)
