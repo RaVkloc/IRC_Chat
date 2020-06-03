@@ -48,6 +48,10 @@ class Client:
         return self.connection.socket, self.token
 
     @request_action()
+    def list_rooms(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
+    @request_action()
     def logout(self, *args, **kwargs):
         return self.connection.socket, self.token
 

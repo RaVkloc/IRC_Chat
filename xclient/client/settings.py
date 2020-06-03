@@ -9,7 +9,7 @@ CLIENT_SEND_ACTIONS = {
     'register': 2,
     'create_room': 3,
     'join_room': 4,
-    'list_room': 5,
+    'list_rooms': 5,
     'leave_room': 6,
     'list_user': 7,
     'send_message': 8,
