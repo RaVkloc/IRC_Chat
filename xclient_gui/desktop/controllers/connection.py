@@ -6,7 +6,7 @@ from xclient_gui.desktop.controllers.clientMediator import Mediator
 
 class GUIClient(Client):
     def __init__(self, ip, port):
-        Client.__init__(self, ip, port)
+        super().__init__(ip, port)
 
         self.slot = None
 
