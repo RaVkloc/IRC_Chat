@@ -1,9 +1,23 @@
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import (QWidget, QGridLayout)
-from xclient_gui.desktop.views.components.spliter import Splitter
+from PyQt5.QtWidgets import QSplitter, QMainWindow
+
+from xclient_gui.desktop.views.components.chat import Chat
+from xclient_gui.desktop.views.components.tree import Tree
 
 
-class Dashboard(QWidget):
+class CentralWidget(QSplitter):
+    def __init__(self):
+        super().__init__()
+        tree = Tree()
+        chat = Chat()
+
+        self.addWidget(tree)
+        self.addWidget(chat)
+        self.setSizes([50, 200])
+        self.setOrientation(QtCore.Qt.Horizontal)
+
+
+class Dashboard(QMainWindow):
     switch_window = QtCore.pyqtSignal(str)
 
     def __init__(self):
@@ -11,15 +25,8 @@ class Dashboard(QWidget):
 
         self.set_widget_default_values()
 
-        layout = QGridLayout()
-        layout.addWidget(Splitter(), 0, 0)
-        # layout.addWidget(Splitter(), 1, 0)
-
-        # self.create_username_input(layout)
-        # self.create_password_input(layout)
-
-        self.setLayout(layout)
+        self.setCentralWidget(CentralWidget())
 
     def set_widget_default_values(self):
         self.setWindowTitle('Login Form')
-        self.resize(1000, 1000)
+        self.resize(500, 500)

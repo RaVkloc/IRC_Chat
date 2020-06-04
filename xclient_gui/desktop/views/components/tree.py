@@ -13,11 +13,8 @@ class Tree(QTreeWidget):
 
             parent_it = QTreeWidgetItem(["Pokój {}".format(i)])
             self.addTopLevelItem(parent_it)
-        self.setFixedHeight(200)
-        self.setFixedWidth(200)
         self.itemDoubleClicked.connect(self.on_item_clicked)
         self.show()
-
 
     @QtCore.pyqtSlot(QTreeWidgetItem, int)
     def on_item_clicked(self, it, col):

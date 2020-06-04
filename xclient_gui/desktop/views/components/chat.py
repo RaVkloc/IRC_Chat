@@ -1,48 +1,38 @@
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QFrame
+from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
+    QListWidgetItem
 
-from xclient_gui.desktop.views.components.tree import Tree
+
+class MessagesList(QListWidget):
+    def __init__(self):
+        super().__init__()
+        self.setStyleSheet('background-color:gray')
+        self.setWordWrap(True)
+        self.show()
+
+
+class NewMessageInput(QHBoxLayout):
+    def __init__(self):
+        super().__init__()
+
+        message_input = QLineEdit()
+        button = QPushButton(">")
+        self.addWidget(message_input)
+        self.addWidget(button)
 
 
 class Chat(QWidget):
     def __init__(self):
         super().__init__()
 
-        # self.addItem(QLayoutItem())
-        # self.addItem("Item 2")
-        # self.addItem("Item 3")
-        # self.addItem("Item 4")
-        # self.addItem("Item 5")
-        # self.setView(QListView())
-        # box = QVBoxLayout
+        layout = QVBoxLayout()
 
-        #
+        messages = MessagesList()
 
-        hbox = QVBoxLayout()
+        messages.addItem("Witaj w pokoju Test1.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
+        messages.addItem("_____________________________________________________")
+        messages.addItem(QListWidgetItem("dsfsd"))
+        new_message_input = NewMessageInput()
 
-        tree = Tree()
-        tree.setFrameShape(QFrame.StyledPanel)
-        tree.setStyleSheet('background-color:white')
-
-        tree2 = Tree()
-        tree2.setFrameShape(QFrame.StyledPanel)
-        tree2.setStyleSheet('background-color:red')
-
-        # chat = Chat()
-        # chat.setStyleSheet('background-color:green')
-
-        # splitter = QSplitter(Qt.Vertival)
-        # splitter.addWidget(tree)
-        # splitter.addWidget(tree2)
-
-        # splitter.setSizes([50, 200])
-
-        # hbox.direction = QVBoxLayout.BottomToTop
-
-        hbox.addWidget(tree)
-        hbox.addWidget(tree2)
-
-        self.setLayout(hbox)
-        self.show()
-
-    # def Clicked(self, item):
-    #     QMessageBox.information(self, "ListWidget", "You clicked: " + item.text())
+        layout.addWidget(messages)
+        layout.addLayout(new_message_input)
+        self.setLayout(layout)
