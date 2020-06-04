@@ -23,8 +23,8 @@ class JoinRoomAction(ActionBase):
                 self.set_error_with_status("Invalid room's name.")
                 return
             try:
-                self._update_user_room(self.user, room_id, cursor)
-            except ChangeRoomException as e:
+                self._update_user_room(self.user, room_id[0], cursor)
+            except (ChangeRoomException, KeyError) as e:
                 self.set_error_with_status(e.message)
                 return
 
@@ -42,4 +42,4 @@ class JoinRoomAction(ActionBase):
         query = "UPDATE users_user SET room_id_id = {} WHERE id = {}"
 
         cursor.execute(query.format(room_id, user_id))
-        cursor.connection.commit()
+        self.db_connect.connection.commit()
