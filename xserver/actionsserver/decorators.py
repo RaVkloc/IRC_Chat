@@ -8,7 +8,7 @@ def login_required(f):
         if not token:
             self.set_error_with_status(AUTHENTICATION_ERROR)
             return
-        query = 'SELECT id from users_user where token="{}"'.format(token)
+        query = "SELECT id from users_user where token='{}'".format(token)
         connection = DatabaseConnection()
         with connection as cursor:
             cursor.execute(query)

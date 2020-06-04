@@ -37,11 +37,11 @@ class RegisterAction(ActionBase):
         logger.debug("Action REGISTER executed SUCCESSFULLY.")
 
     def _is_username_unique(self, username, cursor):
-        query = f"SELECT * FROM users_user WHERE username='{username}'"
+        query = "SELECT * FROM users_user WHERE username='{}'"
 
         logger.debug("Executing query: " + query + "\n\twith params: " + str((username,)))
 
-        cursor.execute(query)
+        cursor.execute(query.format(username))
         result = cursor.fetchone()
         logger.debug("Query result: " + str(result))
 
