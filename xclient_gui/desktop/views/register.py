@@ -55,7 +55,7 @@ class RegisterForm(QWidget, BaseWidget):
         layout.addWidget(self.lineEdit_password, 1, 1)
 
     def create_confirm_password_input(self, layout):
-        label_confirm_password, self.lineEdit_confirm_password = FormInput('Confirm Password:',
+        label_confirm_password, self.lineEdit_confirm_password = FormInput('Confirm password:',
                                                                            "Confirm your password").get_input()
         self.lineEdit_confirm_password.setEchoMode(QLineEdit.Password)
 
