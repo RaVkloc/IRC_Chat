@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout, QMess
 
 from xclient_gui.desktop.views.components.formInput import FormInput
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LOGIN_LOGIN, MESSAGE_ACTION_LOGIN_PASSWORD
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LOGIN_LOGIN, MESSAGE_ACTION_LOGIN_PASSWORD, MESSAGE_STATUS, \
+    MESSAGE_STATUS_OK
 
 
 class LoginForm(QWidget, BaseWidget):
@@ -19,8 +20,8 @@ class LoginForm(QWidget, BaseWidget):
         self.create_gui()
 
     def handle_receive(self, response):
-        status = response.message.body['Status']
-        if status == 'OK':
+        status = response.message.body[MESSAGE_STATUS]
+        if status == MESSAGE_STATUS_OK:
             self.open_next_screen.emit()
         else:
             self.show_error_box(status)
