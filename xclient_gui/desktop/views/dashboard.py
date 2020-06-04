@@ -6,10 +6,11 @@ from xclient_gui.desktop.views.components.tree import Tree
 
 
 class CentralWidget(QSplitter):
-    def __init__(self):
+    def __init__(self, client):
         super().__init__()
-        tree = Tree()
-        chat = Chat()
+
+        tree = Tree(client)
+        chat = Chat(client)
 
         self.addWidget(tree)
         self.addWidget(chat)
@@ -20,12 +21,13 @@ class CentralWidget(QSplitter):
 class Dashboard(QMainWindow):
     switch_window = QtCore.pyqtSignal(str)
 
-    def __init__(self):
+    def __init__(self, client):
         super().__init__()
+        self.client = client
 
         self.set_widget_default_values()
 
-        self.setCentralWidget(CentralWidget())
+        self.setCentralWidget(CentralWidget(self.client))
 
     def set_widget_default_values(self):
         self.setWindowTitle('Login Form')

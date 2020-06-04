@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 
 
 class Tree(QTreeWidget):
-    def __init__(self):
+    def __init__(self, client):
         super().__init__()
         self.setHeaderLabel("Rooms")
         for i in range(3):
