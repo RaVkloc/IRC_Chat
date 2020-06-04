@@ -1,6 +1,8 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout, QMessageBox)
 
+from xclient_gui.desktop.utils.messages import USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER, PASSWORD_INPUT_LABEL, \
+    PASSWORD_INPUT_PLACEHOLDER, REGISTER_INCENTIVE, LOGIN
 from xclient_gui.desktop.views.components.formInput import FormInput
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LOGIN_LOGIN, MESSAGE_ACTION_LOGIN_PASSWORD, MESSAGE_STATUS, \
@@ -38,31 +40,31 @@ class LoginForm(QWidget, BaseWidget):
         self.setLayout(layout)
 
     def set_widget_default_values(self):
-        self.setWindowTitle('Login Form')
+        self.setWindowTitle(LOGIN)
         self.resize(500, 120)
 
     def create_username_input(self, layout):
-        label_name, self.lineEdit_username = FormInput('Username:', "Enter username").get_input()
+        label_name, self.lineEdit_username = FormInput(USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER).get_input()
 
         layout.addWidget(label_name, 0, 0)
         layout.addWidget(self.lineEdit_username, 0, 1)
 
     def create_password_input(self, layout):
-        label_password, self.lineEdit_password = FormInput('Password:', "Enter password").get_input()
+        label_password, self.lineEdit_password = FormInput(PASSWORD_INPUT_LABEL, PASSWORD_INPUT_PLACEHOLDER).get_input()
         self.lineEdit_password.setEchoMode(QLineEdit.Password)
 
         layout.addWidget(label_password, 1, 0)
         layout.addWidget(self.lineEdit_password, 1, 1)
 
     def create_login_button(self, layout):
-        button_login = QPushButton('Login')
+        button_login = QPushButton(LOGIN)
         button_login.clicked.connect(self.login)
         button_login.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
         layout.addWidget(button_login, 2, 0, 1, 2)
         layout.setRowMinimumHeight(2, 75)
 
     def create_register_encouragement(self, layout):
-        register = QPushButton("Don't have account? REGISTER")
+        register = QPushButton(REGISTER_INCENTIVE)
         register.clicked.connect(self.show_register_screen)
         register.setStyleSheet("font-size: 9px;")
         layout.addWidget(register, 3, 2, 1, 2)

@@ -1,6 +1,9 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout)
 
+from xclient_gui.desktop.utils.messages import REGISTER, USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER, \
+    PASSWORD_INPUT_LABEL, PASSWORD_INPUT_PLACEHOLDER, CONFIRM_PASSWORD_INPUT_LABEL, CONFIRM_PASSWORD_INPUT_PLACEHOLDER, \
+    NOT_EQUAL_PASSWORDS
 from xclient_gui.desktop.views.components.formInput import FormInput
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_LOGIN, MESSAGE_ACTION_REGISTER_PASSWORD, MESSAGE_STATUS, \
@@ -38,32 +41,32 @@ class RegisterForm(QWidget, BaseWidget):
         self.setLayout(layout)
 
     def set_widget_default_values(self):
-        self.setWindowTitle('Register')
+        self.setWindowTitle(REGISTER)
         self.resize(500, 120)
 
     def create_username_input(self, layout):
-        label_name, self.lineEdit_username = FormInput('Username:', "Enter username").get_input()
+        label_name, self.lineEdit_username = FormInput(USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER).get_input()
 
         layout.addWidget(label_name, 0, 0)
         layout.addWidget(self.lineEdit_username, 0, 1)
 
     def create_password_input(self, layout):
-        label_password, self.lineEdit_password = FormInput('Password:', "Enter password").get_input()
+        label_password, self.lineEdit_password = FormInput(PASSWORD_INPUT_LABEL, PASSWORD_INPUT_PLACEHOLDER).get_input()
         self.lineEdit_password.setEchoMode(QLineEdit.Password)
 
         layout.addWidget(label_password, 1, 0)
         layout.addWidget(self.lineEdit_password, 1, 1)
 
     def create_confirm_password_input(self, layout):
-        label_confirm_password, self.lineEdit_confirm_password = FormInput('Confirm password:',
-                                                                           "Confirm your password").get_input()
+        label_confirm_password, self.lineEdit_confirm_password = FormInput(CONFIRM_PASSWORD_INPUT_LABEL,
+                                                                           CONFIRM_PASSWORD_INPUT_PLACEHOLDER).get_input()
         self.lineEdit_confirm_password.setEchoMode(QLineEdit.Password)
 
         layout.addWidget(label_confirm_password, 2, 0)
         layout.addWidget(self.lineEdit_confirm_password, 2, 1)
 
     def create_register_button(self, layout):
-        button_register = QPushButton('Register')
+        button_register = QPushButton(REGISTER)
         button_register.clicked.connect(self.register)
         button_register.setStyleSheet("padding-top: 5px; padding-bottom: 5px;")
         layout.addWidget(button_register, 3, 0, 1, 2)
@@ -79,4 +82,4 @@ class RegisterForm(QWidget, BaseWidget):
             }
             self.client.register(body=body)
         else:
-            self.show_error_box("Passwords are not equal.")
+            self.show_error_box(NOT_EQUAL_PASSWORDS)
