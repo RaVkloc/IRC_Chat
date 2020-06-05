@@ -64,8 +64,8 @@ class Client:
 
     def start(self):
         with self.connection as conn:
-            thread_receive = threading.Thread(target=self.receive,daemon=True)
-            thread_send = threading.Thread(target=self.send,daemon=True)
+            thread_receive = threading.Thread(target=self.receive, daemon=True)
+            thread_send = threading.Thread(target=self.send, daemon=True)
             thread_receive.start()
             thread_send.start()
             time.sleep(1)
@@ -96,7 +96,7 @@ class TerminalClient(Client):
             print("Respond: ", end='')
             time.sleep(1)
 
-    def handle_receive(self, response:Response):
+    def handle_receive(self, response: Response):
         print(response.message.body)
 
     def show_actions(self):
@@ -107,6 +107,3 @@ class TerminalClient(Client):
         for arg in func.__code__.co_varnames:
             body[arg.capitalize()] = input(f"Podaj {arg.capitalize()}: ")
         return body
-
-
-
