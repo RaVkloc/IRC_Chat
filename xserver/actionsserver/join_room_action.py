@@ -25,10 +25,6 @@ class JoinRoomAction(ActionBase):
                 self.set_error_with_status(e.message)
                 logger.debug("(userID={}) Room not found. Problem with getting room id.".format(self.user))
                 return
-            if not room_id:
-                self.set_error_with_status("Invalid room's name.")
-                logger.debug("(userID={}) Room not found.".format(self.user))
-                return
             try:
                 self._update_user_room(self.user, room_id[0], cursor)
             except (ChangeRoomException, KeyError) as e:
@@ -48,6 +44,8 @@ class JoinRoomAction(ActionBase):
 
         cursor.execute(query.format(room_name))
         result = cursor.fetchone()
+        if not result:
+            raise InvalidRoom
         logger.debug("(userID={})Query result: ".format(self.user) + str(result))
         return result
 
