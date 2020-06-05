@@ -28,3 +28,7 @@ class ValidationPasswordException(Exception):
 
 class UniqueRoomException(Exception):
     message = "A room with the same name already exists. Try another name."
+
+
+class NoActiveRoomException(Exception):
+    message = "no room is active"
