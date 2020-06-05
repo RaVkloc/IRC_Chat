@@ -70,3 +70,4 @@ class RegisterAction(ActionBase):
 
         cursor.execute(query.format(username, hash_pass))
         self.db_connect.connection.commit()
+        logger.debug("Query executed successfully.")

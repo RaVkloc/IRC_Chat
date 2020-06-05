@@ -77,3 +77,4 @@ class LoginAction(ActionBase):
 
         cursor.execute(query.format(user_token, username))
         self.db_connect.connection.commit()
+        logger.debug("Query executed successfully.")
