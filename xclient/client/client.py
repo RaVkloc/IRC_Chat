@@ -77,16 +77,17 @@ class TerminalClient(Client):
 
     def send(self, *args, **kwargs):
         while True:
-            print("Wybierz jedną z akcji")
+            print("Choose one action from following:")
             self.show_actions()
-            action = input("Podaj nazwe akcji: ")
+            action = input("Action: ")
             if action not in CLIENT_SEND_ACTIONS.keys():
                 continue
             method = getattr(self, action)
             if not method:
+                print("Such action does not exists.")
                 continue
 
-            body = input("Podaj JSON do wyslania: ")
+            body = input("Put JSON to send: ")
             body = json.loads(body)
 
             method(body=body)
