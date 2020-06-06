@@ -31,4 +31,4 @@ class UniqueRoomException(Exception):
 
 
 class NoActiveRoomException(Exception):
-    message = "no room is active"
+    message = "No room is active."
