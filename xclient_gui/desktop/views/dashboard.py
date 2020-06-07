@@ -2,6 +2,8 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QSplitter, QMainWindow, QAction, QMenu, QInputDialog
 
+from xclient_gui.desktop.utils.messages import SERVER_ERROR, USER, LOGOUT, LOGOUT_TIP, ROOM, NEW_ROOM, NEW_ROOM_TIP, \
+    LEAVE_ROOM, LEAVE_ROOM_TIP, REFRESH_LIST_ROOMS, REFRESH_LIST_ROOMS_TIP, NEW_ROOM_ENTER_NAME
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
 from xclient_gui.desktop.views.components.chat import Chat
 from xclient_gui.desktop.views.components.tree import Tree
@@ -16,15 +18,26 @@ class CentralWidget(QSplitter, BaseWidget):
     def __init__(self, client, on_logout):
         super().__init__()
         self.on_logout = on_logout
-        self.tree = Tree(client)
-        self.chat = Chat(client)
+        self.client = client
+
+        self.tree = None
+        self.chat = None
+
+        self.compose_widgets()
+        self.set_default_splitter_settings()
+
+    def compose_widgets(self):
+        self.tree = Tree(self.client)
+        self.chat = Chat(self.client)
 
         self.addWidget(self.tree)
         self.addWidget(self.chat)
+
+    def set_default_splitter_settings(self):
         self.setSizes([50, 200])
         self.setOrientation(QtCore.Qt.Horizontal)
 
-    def handle_recieve_status(self, response):
+    def handle_receive_status(self, response):
         if MESSAGE_STATUS in response.message.body.keys():
             status = response.message.body[MESSAGE_STATUS]
             if status != MESSAGE_STATUS_OK:
@@ -36,7 +49,7 @@ class CentralWidget(QSplitter, BaseWidget):
         try:
             header = response.message.header
             body = response.message.body
-            if self.handle_recieve_status(response):
+            if self.handle_receive_status(response):
                 if header[MESSAGE_ACTION] == MESSAGE_ACTION_LISTROOMS_CODE:
                     self.tree.set_room_list(body[MESSAGE_ACTION_LISTROOMS_LIST])
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_JOIN_ROOM_CODE:
@@ -54,7 +67,7 @@ class CentralWidget(QSplitter, BaseWidget):
                     self.on_logout.emit()
 
         except KeyError:
-            self.show_error_box("Server error.")
+            self.show_error_box(SERVER_ERROR)
 
 
 class Dashboard(QMainWindow):
@@ -82,41 +95,40 @@ class Dashboard(QMainWindow):
         main_menu.addMenu(user)
 
     def get_user_menu(self):
-        user = QMenu("User", self)
+        user = QMenu(USER, self)
 
-        user_logout = QAction("Logout", self)
-        user_logout.setStatusTip('Logout from current account.')
+        user_logout = QAction(LOGOUT, self)
+        user_logout.setStatusTip(LOGOUT_TIP)
         user_logout.triggered.connect(self.logout)
 
         user.addAction(user_logout)
         return user
 
     def get_room_menu(self):
-        room = QMenu("Room", self)
+        room = QMenu(ROOM, self)
 
-        room_new_room = QAction("New room", self)
-        room_new_room.setStatusTip('Create new room')
+        room_new_room = QAction(NEW_ROOM, self)
+        room_new_room.setStatusTip(NEW_ROOM_TIP)
         room_new_room.triggered.connect(self.create_room)
 
-        room_leave_room = QAction("Leave room", self)
-        room_leave_room.setStatusTip('Leave from the current room')
+        room_leave_room = QAction(LEAVE_ROOM, self)
+        room_leave_room.setStatusTip(LEAVE_ROOM_TIP)
         room_leave_room.triggered.connect(self.leave_room)
 
-        room_refresh_list_rooms = QAction("Refresh rooms", self)
-        room_refresh_list_rooms.setStatusTip('Refresh the list of rooms')
+        room_refresh_list_rooms = QAction(REFRESH_LIST_ROOMS, self)
+        room_refresh_list_rooms.setStatusTip(REFRESH_LIST_ROOMS_TIP)
         room_refresh_list_rooms.triggered.connect(self.refresh_room_list)
 
         room.addAction(room_new_room)
         room.addAction(room_leave_room)
         room.addAction(room_refresh_list_rooms)
-
         return room
 
     def logout(self):
         self.client.logout()
 
     def create_room(self):
-        text, ok = QInputDialog.getText(self, 'New room', 'Enter room name:')
+        text, ok = QInputDialog.getText(self, NEW_ROOM, NEW_ROOM_ENTER_NAME)
         if ok:
             body = {
                 MESSAGE_ACTION_NEW_ROOM_ROOM_NAME: text
@@ -130,5 +142,5 @@ class Dashboard(QMainWindow):
         self.client.list_rooms()
 
     def set_widget_default_values(self):
-        self.setWindowTitle('Login Form')
+        self.setWindowTitle('Hello')
         self.resize(500, 500)

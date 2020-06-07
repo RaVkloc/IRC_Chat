@@ -65,10 +65,14 @@ class Chat(QWidget):
         self.chat_box_layout = QVBoxLayout()
 
         self.messages = MessagesList()
+        self.set_default_messages_text()
 
         self.chat_box_layout.addWidget(self.messages)
 
         self.setLayout(self.chat_box_layout)
+
+    def set_default_messages_text(self):
+        self.messages.addItem("Choose room to start chat.")
 
     def handle_joining_room(self):
         self.messages.clear()
@@ -94,9 +98,9 @@ class Chat(QWidget):
             self.new_message_input = None
 
     def handle_new_message(self, message):
-        print("message")
         self.messages.addItem(QListWidgetItem(message))
 
     def leave_room(self):
         self.remove_input()
         self.messages.clear()
+        self.set_default_messages_text()
