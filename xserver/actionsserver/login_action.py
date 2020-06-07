@@ -1,5 +1,6 @@
 import hashlib
 import logging
+from collections import namedtuple
 from uuid import uuid4
 
 from xserver.actionsserver.action_base import ActionBase
@@ -17,7 +18,7 @@ class LoginAction(ActionBase):
     def get_action_number(self):
         return MESSAGE_ACTION_LOGIN_CODE
 
-    def execute(self):
+    def execute(self, client=None, server=None):
         logger.debug("Starting executing LOGIN action.")
         login = self.msg.get_body_param(MESSAGE_ACTION_LOGIN_LOGIN)
         passwd = self.msg.get_body_param(MESSAGE_ACTION_LOGIN_PASSWORD)
@@ -35,7 +36,7 @@ class LoginAction(ActionBase):
 
             # empty means no such a user in DB
             # hashes are not equals means incorrect password
-            if not result or result[1] != passwd:
+            if not result or result.password != passwd:
                 # send the same info in two cases so as no to say if such a user exists
                 self.set_error_with_status("Invalid username or password.")
                 logger.error("No user found or password does not match its hash.")
@@ -44,13 +45,14 @@ class LoginAction(ActionBase):
             token = str(uuid4())
             logger.debug("Generated token: " + token)
             try:
-                self._add_user_token_to_db(result[0], token, cursor)
+                self._add_user_token_to_db(result.username, token, cursor)
             except InvalidTokenSave as e:
                 self.set_error_with_status(e.message)
                 logger.error(e.message)
                 return
 
         self.result.add_body_param(MESSAGE_ACTION_LOGIN_TOKEN, token)
+        client.user = result.id
         self.set_status_ok()
         logger.debug("Action LOGIN executed SUCCESSFULLY.")
 
@@ -60,13 +62,17 @@ class LoginAction(ActionBase):
         return hash_alg.hexdigest()
 
     def _get_user_data_from_db(self, login, cursor):
-        query = "SELECT username, password FROM users_user WHERE username = '{}'"
+        query = "SELECT id, username, password FROM users_user WHERE username = '{}'"
 
         logger.debug("Executing query: " + query + "\n\twith params: " + str((login,)))
 
         # return None if user not found
         cursor.execute(query.format(login))
         result = cursor.fetchone()
+        if not result:
+            raise InvalidLoginData()
+        Credential = namedtuple('Credential', 'id username password')
+        result = Credential(id=result[0], username=result[1], password=result[2])
         logger.debug("Query result: " + str(result))
         return result
 
