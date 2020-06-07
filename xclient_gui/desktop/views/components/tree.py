@@ -11,12 +11,19 @@ class Tree(QTreeWidget):
 
         self.setHeaderLabel("Rooms")
 
-        self.itemDoubleClicked.connect(self.on_item_clicked)
+        self.itemClicked.connect(self.on_item_clicked)
         self.get_room_list()
         self.show()
 
     def get_room_list(self):
         self.client.list_rooms()
+
+    def refresh_room_list(self):
+        self.get_room_list()
+
+    def clear_selection(self):
+        self.clearFocus()
+        self.clearSelection()
 
     def set_room_list(self, rooms):
         list_rooms = rooms.split(',')
@@ -27,7 +34,6 @@ class Tree(QTreeWidget):
 
     @QtCore.pyqtSlot(QTreeWidgetItem, int)
     def on_item_clicked(self, it, col):
-        # print(it, col, it.text(col))
         body = {
             MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME: it.text(col)
         }

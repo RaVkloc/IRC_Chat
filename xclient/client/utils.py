@@ -47,7 +47,6 @@ class Sender:
             socket_, token = f(*args, **kwargs)
             if token:
                 message.add_header_param('Token', token)
-            print(message.convert_message_to_bytes())
             socket_.sendall(message.convert_message_to_bytes())
         except KeyError:
             raise KeyError(f"There is no action for {f.name} function")
