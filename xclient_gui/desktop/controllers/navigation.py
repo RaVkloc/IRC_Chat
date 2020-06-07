@@ -24,7 +24,8 @@ class ScreenController:
         self.set_screen(login)
 
     def show_dashboard(self):
-        dashboard = Dashboard()
+        dashboard = Dashboard(self.client)
+        dashboard.on_logout.connect(self.show_login)
         self.set_screen(dashboard)
 
     def show_register(self):

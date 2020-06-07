@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
     QListWidgetItem
 
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
+
 
 class MessagesList(QListWidget):
     def __init__(self):
@@ -10,29 +12,95 @@ class MessagesList(QListWidget):
         self.show()
 
 
-class NewMessageInput(QHBoxLayout):
-    def __init__(self):
+class NewMessageInput(QWidget):
+    def __init__(self, client):
         super().__init__()
+        self.client = client
+        self.message_input = None
 
-        message_input = QLineEdit()
+        self.create_gui()
+
+    def create_message_input(self):
+        # TODO change to QTextPlainEdit
+        return QLineEdit()
+
+    def send_new_message(self):
+        text = self.message_input.text()
+        if len(text) > 0:
+            self.message_input.setText("")
+
+            # TODO change the string to the modouledef param
+            body = {
+                MESSAGE_ACTION_SENDMESSAGE_NAME: text
+            }
+            self.client.send_message(body=body)
+
+    def handle_button_clicked(self):
+        self.send_new_message()
+
+    def create_push_button(self):
         button = QPushButton(">")
-        self.addWidget(message_input)
-        self.addWidget(button)
+        button.clicked.connect(self.handle_button_clicked)
+        return button
+
+    def create_gui(self):
+        self.message_input = self.create_message_input()
+        push_button = self.create_push_button()
+
+        box_layout = QHBoxLayout()
+        box_layout.addWidget(self.message_input)
+        box_layout.addWidget(push_button)
+
+        self.setLayout(box_layout)
+
+    def reset_items(self):
+        self.message_input.clear()
 
 
 class Chat(QWidget):
-    def __init__(self):
+    def __init__(self, client):
         super().__init__()
+        self.client = client
+        self.new_message_input = None
+        self.chat_box_layout = QVBoxLayout()
 
-        layout = QVBoxLayout()
+        self.messages = MessagesList()
+        self.set_default_messages_text()
 
-        messages = MessagesList()
+        self.chat_box_layout.addWidget(self.messages)
 
-        messages.addItem("Witaj w pokoju Test1.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
-        messages.addItem("_____________________________________________________")
-        messages.addItem(QListWidgetItem("dsfsd"))
-        new_message_input = NewMessageInput()
+        self.setLayout(self.chat_box_layout)
 
-        layout.addWidget(messages)
-        layout.addLayout(new_message_input)
-        self.setLayout(layout)
+    def set_default_messages_text(self):
+        self.messages.addItem("Choose room to start chat.")
+
+    def handle_joining_room(self):
+        self.messages.clear()
+        self.messages.addItem("Witaj na kanale.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
+        self.messages.addItem("_____________________________________________________")
+        self.reset_input()
+
+    def reset_input(self):
+        if self.new_message_input is not None:
+            self.new_message_input.reset_items()
+        else:
+            self.create_input()
+
+    def create_input(self):
+        self.new_message_input = NewMessageInput(self.client)
+        self.chat_box_layout.addWidget(self.new_message_input)
+
+    def remove_input(self):
+
+        self.chat_box_layout.removeWidget(self.new_message_input)
+        if self.new_message_input is not None:
+            self.new_message_input.close()
+            self.new_message_input = None
+
+    def handle_new_message(self, message):
+        self.messages.addItem(QListWidgetItem(message))
+
+    def leave_room(self):
+        self.remove_input()
+        self.messages.clear()
+        self.set_default_messages_text()
