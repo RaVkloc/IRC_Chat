@@ -1,10 +1,13 @@
 import hashlib
+import logging
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_REGISTER_LOGIN, \
     MESSAGE_ACTION_REGISTER_PASSWORD
 
 from xserver.actionsserver.action_base import ActionBase
 from xserver.actionsserver.exceptions import UniqueUsernameException, ValidationPasswordException
+
+logger = logging.getLogger("RegisterAction")
 
 
 class RegisterAction(ActionBase):
@@ -16,6 +19,7 @@ class RegisterAction(ActionBase):
         return MESSAGE_ACTION_REGISTER_CODE
 
     def execute(self):
+        logger.debug("Executing REGISTER action started.")
         username = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_LOGIN)
         password = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_PASSWORD)
 
@@ -30,18 +34,26 @@ class RegisterAction(ActionBase):
                 return
 
         self.set_status_ok()
+        logger.debug("Action REGISTER executed SUCCESSFULLY.")
 
     def _is_username_unique(self, username, cursor):
-        query = f"SELECT * FROM users_user WHERE username='{username}'"
+        query = "SELECT * FROM users_user WHERE username='{}'"
 
-        cursor.execute(query)
-        if cursor.fetchone():
+        logger.debug("Executing query: " + query + "\n\twith params: " + str((username,)))
+
+        cursor.execute(query.format(username))
+        result = cursor.fetchone()
+        logger.debug("Query result: " + str(result))
+
+        if result:
+            logger.debug("Inserted username is not unique.")
             raise UniqueUsernameException()
         return cursor.fetchone() is None
 
     def _validate_password(self, passwd):
         if len(passwd) > 5:
             return True
+        logger.debug("User's password is too weak.")
         raise ValidationPasswordException()
 
     def _get_user_password_hash(self, password):
@@ -54,5 +66,8 @@ class RegisterAction(ActionBase):
 
         hash_pass = self._get_user_password_hash(password)
 
+        logger.debug("Executing query: " + query + "\n\twith params: " + str((username, hash_pass)))
+
         cursor.execute(query.format(username, hash_pass))
         self.db_connect.connection.commit()
+        logger.debug("Query executed successfully.")

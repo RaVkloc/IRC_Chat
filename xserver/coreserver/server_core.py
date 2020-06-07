@@ -7,12 +7,12 @@ from xserver.coreserver.coreserver_moduledefs import *
 
 
 class CoreServer(object):
-    __instance = None
+    instance = None
 
     def __new__(cls, *args, **kwargs):
-        if not isinstance(cls.__instance, type(cls)):
-            cls.__instance = object.__new__(cls, *args, **kwargs)
-        return cls.__instance
+        if cls.instance is None:
+            cls.instance = super().__new__(cls)
+        return cls.instance
 
     def __init__(self):
         self.__init_logger()
@@ -29,8 +29,9 @@ class CoreServer(object):
             while True:
                 client_socket, client_addr = conn.socket.accept()
                 self.logger.debug(f"New client {client_addr} connected.")
-                new_client = Client(client_socket, client_addr)
+                new_client = Client(client_socket, client_addr,self)
                 self.clients.append(new_client)
+                new_client.start()
 
 
 if __name__ == "__main__":

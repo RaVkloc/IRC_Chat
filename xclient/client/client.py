@@ -64,8 +64,8 @@ class Client:
 
     def start(self):
         with self.connection as conn:
-            thread_receive = threading.Thread(target=self.receive,daemon=True)
-            thread_send = threading.Thread(target=self.send,daemon=True)
+            thread_receive = threading.Thread(target=self.receive, daemon=True)
+            thread_send = threading.Thread(target=self.send, daemon=True)
             thread_receive.start()
             thread_send.start()
             time.sleep(1)
@@ -77,21 +77,26 @@ class TerminalClient(Client):
 
     def send(self, *args, **kwargs):
         while True:
-            print("Wybierz jedną z akcji")
+            print("Choose one action from following:")
             self.show_actions()
-            action = input("Podaj nazwe akcji: ")
+            action = input("Action: ")
             if action not in CLIENT_SEND_ACTIONS.keys():
                 continue
             method = getattr(self, action)
             if not method:
+                print("Such action does not exists.")
                 continue
 
-            body = input("Podaj JSON do wyslania: ")
+            body = input("Put JSON to send: ")
             body = json.loads(body)
 
             method(body=body)
 
-    def handle_receive(self, response:Response):
+            # FIXME: Temporary solution for printing result in incorrect place.
+            print("Respond: ", end='')
+            time.sleep(1)
+
+    def handle_receive(self, response: Response):
         print(response.message.body)
 
     def show_actions(self):
@@ -102,6 +107,3 @@ class TerminalClient(Client):
         for arg in func.__code__.co_varnames:
             body[arg.capitalize()] = input(f"Podaj {arg.capitalize()}: ")
         return body
-
-
-

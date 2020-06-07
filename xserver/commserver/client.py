@@ -4,16 +4,21 @@ import threading
 from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
+from xserver.actionsserver.login_action import LoginAction
+from xserver.actionsserver.send_message_action import SendMessageAction
 from xserver.commserver.commserver_moduledefs import RECEIVE_BYTES_LIMIT
 from xserver.actionsserver.action_provider import ActionProvider
 
 
 class Client:
-    def __init__(self, client_socket, client_address):
+    def __init__(self, client_socket, client_address, server):
         self.client_socket = client_socket
         self.client_address = client_address
         self.message = None
         self.logger = logging.getLogger("Client")
+        self.server = server
+
+    def start(self):
         recv_thread = threading.Thread(target=self.always_listen, daemon=True)
         recv_thread.start()
 
@@ -38,7 +43,12 @@ class Client:
             action = ActionProvider.get_action_for(self.message)
 
             if action is not None:
-                action.execute()
+                kwargs = {}
+                if isinstance(action, (SendMessageAction, LoginAction)):
+                    kwargs['server'] = self.server
+                if isinstance(action, LoginAction):
+                    kwargs['client'] = self
+                action.execute(**kwargs)
 
                 response = action.get_action_result()
                 self.client_socket.sendall(response.convert_message_to_bytes())
