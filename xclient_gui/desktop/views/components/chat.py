@@ -50,20 +50,31 @@ class NewMessageInput(QWidget):
 
         self.setLayout(box_layout)
 
+    def reset_items(self):
+        self.message_input.clear()
+
 
 class Chat(QWidget):
     def __init__(self, client):
         super().__init__()
         layout = QVBoxLayout()
 
-        messages = MessagesList()
-        messages.addItem("Witaj w pokoju Test1.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
-        messages.addItem("_____________________________________________________")
-        messages.addItem(QListWidgetItem("dsfsd"))
+        self.messages = MessagesList()
+        self.messages.addItem("Witaj w pokoju Test1.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
+        self.messages.addItem("_____________________________________________________")
+        self.messages.addItem(QListWidgetItem("dsfsd"))
 
-        new_message_input = NewMessageInput(client)
+        self.new_message_input = NewMessageInput(client)
 
-        layout.addWidget(messages)
-        layout.addWidget(new_message_input)
+        layout.addWidget(self.messages)
+        layout.addWidget(self.new_message_input)
 
         self.setLayout(layout)
+
+    def reset_room(self):
+        self.messages.clear()
+        self.new_message_input.reset_items()
+
+    def handle_new_message(self, message):
+        print(message)
+        self.messages.addItem(message)

@@ -22,6 +22,7 @@ class GUI:
         self.app = QApplication(sys.argv)
         self.controller = ScreenController(self.client)
         self.controller.show_login()
+        # self.controller.show_dashboard()
         sys.exit(self.app.exec_())
 
     def start(self):
