@@ -32,3 +32,7 @@ class UniqueRoomException(Exception):
 
 class NoActiveRoomException(Exception):
     message = "No room is active."
+
+
+class DatabaseException(Exception):
+    message = "Database Error"
