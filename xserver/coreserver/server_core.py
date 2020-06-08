@@ -28,7 +28,7 @@ class CoreServer(object):
             while True:
                 client_socket, client_addr = conn.socket.accept()
                 self.logger.debug(f"New client {client_addr} connected.")
-                new_client = Client(client_socket, client_addr,self)
+                new_client = Client(client_socket, client_addr, self)
                 self.clients.append(new_client)
                 new_client.start()
 
