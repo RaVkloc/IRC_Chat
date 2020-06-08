@@ -13,7 +13,7 @@ from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LISTROOMS_CODE, MESSAGE_ACTION
     MESSAGE_ACTION_SENDMESSAGE_NAME, MESSAGE_STATUS, MESSAGE_STATUS_OK, MESSAGE_ACTION_NEW_ROOM_ROOM_NAME, \
     MESSAGE_ACTION_NEW_ROOM_CODE, MESSAGE_ACTION_LEAVEROOM_CODE, MESSAGE_ACTION_LOGOUT_CODE, \
     MESSAGE_ACTION_RECVMESSAGE_MESSAGE, MESSAGE_ACTION_RECVMESSAGE_TIMESTAMP, MESSAGE_ACTION_RECVMESSAGE_USER, \
-    MESSAGE_ACTION_LISTUSERS_CODE, MESSAGE_ACTION_LISTUSERS_LIST
+    MESSAGE_ACTION_LISTUSERS_CODE, MESSAGE_ACTION_LISTUSERS_LIST, MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME
 
 
 class CentralWidget(QSplitter, BaseWidget):
@@ -56,8 +56,8 @@ class CentralWidget(QSplitter, BaseWidget):
                 if header[MESSAGE_ACTION] == MESSAGE_ACTION_LISTROOMS_CODE:
                     self.tree.set_room_list(body[MESSAGE_ACTION_LISTROOMS_LIST])
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_JOIN_ROOM_CODE:
-                    self.chat.handle_joining_room()
-                #     TODO chane actions "*_SENDMESSAGE_*" TO "*_RECVMESSAGE_*"
+                    print(body)
+                    self.chat.handle_joining_room(body[MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME])
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_RECVMESSAGE_CODE:
                     if MESSAGE_ACTION_RECVMESSAGE_MESSAGE in body.keys():
                         self.chat.handle_new_message(body[MESSAGE_ACTION_RECVMESSAGE_TIMESTAMP],

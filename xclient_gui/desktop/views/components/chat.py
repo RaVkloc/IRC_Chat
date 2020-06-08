@@ -75,11 +75,13 @@ class Chat(QWidget):
         self.setLayout(self.chat_box_layout)
 
     def set_default_messages_text(self):
+        # TODO move strings to utils
         self.messages.addItem("Choose room to start chat.")
 
-    def handle_joining_room(self):
+    def handle_joining_room(self, room_name):
         self.messages.clear()
-        self.messages.addItem("Witaj na kanale.")
+        # TODO move strings to utils
+        self.messages.addItem(f"Welcome to the {room_name} channel.")
         self.messages.addItem("")
 
         self.reset_input()
@@ -111,6 +113,7 @@ class Chat(QWidget):
     def show_list_users(self, list_users):
 
         self.messages.addItem(QListWidgetItem(''))
+        # TODO move strings to utils
         title = QListWidgetItem('Currently available users on this channel:')
         title.setForeground(QColor("#07125c"))
         self.messages.addItem(title)
