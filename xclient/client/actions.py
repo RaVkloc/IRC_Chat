@@ -8,6 +8,7 @@ class Response:
     """
     Message wrapper.
     """
+
     def __init__(self, message: Message):
         self.message = message
 

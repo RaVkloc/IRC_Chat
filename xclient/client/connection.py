@@ -19,7 +19,7 @@ class Connection:
         print(exc_type, exc_val, exc_tb)
         self.socket.close()
 
-    def send(self, message:Message):
+    def send(self, message: Message):
         return self.socket.sendall(message.convert_message_to_bytes())
 
     def receive(self):
