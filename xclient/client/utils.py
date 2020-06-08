@@ -1,7 +1,7 @@
 import socket
 import types
 
-from xclient.client.settings import BASE_HEADERS, CLIENT_SEND_ACTIONS
+from xclient.client.settings import BASE_HEADERS, CLIENT_SEND_ACTIONS, TOKEN_KEY
 from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 
@@ -46,7 +46,7 @@ class Sender:
             message = Message(header=headers, body=body)
             socket_, token = f(*args, **kwargs)
             if token:
-                message.add_header_param('Token', token)
+                message.add_header_param(TOKEN_KEY, token)
             socket_.sendall(message.convert_message_to_bytes())
         except KeyError:
             raise KeyError(f"There is no action for {f.name} function")
