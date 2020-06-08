@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
 from PyQt5 import QtCore
 
@@ -30,7 +31,10 @@ class Tree(QTreeWidget):
         self.clear()
 
         for i in list_rooms:
-            self.addTopLevelItem(QTreeWidgetItem([i]))
+            item = QTreeWidgetItem([i])
+            # item.setBackground(QColor(255, 0, 0, 127))
+
+            self.addTopLevelItem(item)
 
     @QtCore.pyqtSlot(QTreeWidgetItem, int)
     def on_item_clicked(self, it, col):

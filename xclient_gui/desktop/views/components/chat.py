@@ -1,5 +1,6 @@
 import datetime
 
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
     QListWidgetItem
 
@@ -78,8 +79,9 @@ class Chat(QWidget):
 
     def handle_joining_room(self):
         self.messages.clear()
-        self.messages.addItem("Witaj na kanale.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
-        self.messages.addItem("_____________________________________________________")
+        self.messages.addItem("Witaj na kanale.")
+        self.messages.addItem("")
+
         self.reset_input()
 
     def reset_input(self):
@@ -105,6 +107,17 @@ class Chat(QWidget):
         date = datetime.datetime.fromtimestamp(float(timestamp))
         item = item_template.format(date.strftime("%d.%m.%Y %H:%M:%S"), user, text)
         self.messages.addItem(QListWidgetItem(item))
+
+    def show_list_users(self, list_users):
+
+        self.messages.addItem(QListWidgetItem(''))
+        title = QListWidgetItem('Currently available users on this channel:')
+        title.setForeground(QColor("#07125c"))
+        self.messages.addItem(title)
+        users = QListWidgetItem('  ' + list_users)
+        users.setForeground(QColor("#363434"))
+        self.messages.addItem(users)
+        self.messages.addItem(QListWidgetItem(''))
 
     def leave_room(self):
         self.remove_input()
