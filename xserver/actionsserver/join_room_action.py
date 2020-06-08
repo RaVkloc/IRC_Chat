@@ -31,6 +31,7 @@ class JoinRoomAction(ActionBase):
                 self.set_error_with_status(e.message)
                 return
 
+            self.result.add_body_param(MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME, room_name)
             self.set_status_ok()
             logger.debug("(userID={})Executing action JOIN_ROOM finished SUCCESSFULLY.".format(self.user))
 
