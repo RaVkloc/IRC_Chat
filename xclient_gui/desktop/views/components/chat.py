@@ -1,3 +1,5 @@
+import datetime
+
 from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
     QListWidgetItem
 
@@ -97,8 +99,12 @@ class Chat(QWidget):
             self.new_message_input.close()
             self.new_message_input = None
 
-    def handle_new_message(self, message):
-        self.messages.addItem(QListWidgetItem(message))
+    def handle_new_message(self, timestamp, user, text):
+        # [date] user: message
+        item_template = "[{}] {}: {}"
+        date = datetime.datetime.fromtimestamp(float(timestamp))
+        item = item_template.format(date.strftime("%d.%m.%Y %H:%M:%S"), user, text)
+        self.messages.addItem(QListWidgetItem(item))
 
     def leave_room(self):
         self.remove_input()
