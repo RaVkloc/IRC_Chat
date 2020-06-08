@@ -51,12 +51,10 @@ class CentralWidget(QSplitter, BaseWidget):
         try:
             header = response.message.header
             body = response.message.body
-            print(header, body)
             if self.handle_receive_status(response):
                 if header[MESSAGE_ACTION] == MESSAGE_ACTION_LISTROOMS_CODE:
                     self.tree.set_room_list(body[MESSAGE_ACTION_LISTROOMS_LIST])
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_JOIN_ROOM_CODE:
-                    print(body)
                     self.chat.handle_joining_room(body[MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME])
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_RECVMESSAGE_CODE:
                     if MESSAGE_ACTION_RECVMESSAGE_MESSAGE in body.keys():
