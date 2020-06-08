@@ -59,6 +59,10 @@ class Client:
     def logout(self, *args, **kwargs):
         return self.connection.socket, self.token
 
+    @request_action()
+    def list_user(self, *args, **kwargs):
+        return self.connection.socket, self.token
+
     def handle_receive(self, message):
         raise NotImplementedError
 
