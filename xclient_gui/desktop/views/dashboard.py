@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QMargins
 from PyQt5.QtWidgets import QSplitter, QMainWindow, QAction, QMenu, QInputDialog
 
 from xclient_gui.desktop.utils.messages import SERVER_ERROR, USER, LOGOUT, LOGOUT_TIP, ROOM, NEW_ROOM, NEW_ROOM_TIP, \
@@ -84,6 +84,11 @@ class Dashboard(QMainWindow):
         self.create_menu()
 
         self.setCentralWidget(CentralWidget(self.client, self.on_logout))
+
+        margins = QMargins()
+        margins.setLeft(5)
+        self.setContentsMargins(margins)
+
         self.show()
 
     def create_menu(self):
