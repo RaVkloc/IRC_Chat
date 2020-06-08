@@ -1,6 +1,7 @@
 import logging
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LISTROOMS_CODE, MESSAGE_ACTION_LISTUSERS_LIST
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_LISTUSERS_LIST, \
+    MESSAGE_ACTION_LISTUSERS_CODE
 from xserver.actionsserver.action_base import ActionBase
 from xserver.actionsserver.decorators import login_required
 from xserver.actionsserver.exceptions import NoActiveRoomException
@@ -10,7 +11,7 @@ logger = logging.getLogger("ListUserAction")
 
 class ListUsersAction(ActionBase):
     def get_action_number(self):
-        return MESSAGE_ACTION_LISTROOMS_CODE
+        return MESSAGE_ACTION_LISTUSERS_CODE
 
     @login_required
     def execute(self):
