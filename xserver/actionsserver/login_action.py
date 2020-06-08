@@ -51,7 +51,7 @@ class LoginAction(ActionBase):
                 logger.error(e.message)
                 return
 
-        self.result.add_body_param(MESSAGE_ACTION_LOGIN_TOKEN, token)
+        self.result.add_body_param(MESSAGE_TOKEN, token)
         client.user = result.id
         self.set_status_ok()
         logger.debug("Action LOGIN executed SUCCESSFULLY.")

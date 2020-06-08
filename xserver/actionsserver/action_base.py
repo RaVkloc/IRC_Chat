@@ -14,6 +14,7 @@ class ActionBase(metaclass=ABCMeta):
         self.error = False
         self.msg = message
         self.user = None
+
         self.set_basic_params()
         self.db_connect = DatabaseConnection()
 

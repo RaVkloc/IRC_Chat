@@ -97,7 +97,7 @@ class TerminalClient(Client):
             method(body=body)
 
             # FIXME: Temporary solution for printing result in incorrect place.
-            print("Respond: ", end='')
+            print("Response: ", end='')
             time.sleep(1)
 
     def handle_receive(self, response: Response):

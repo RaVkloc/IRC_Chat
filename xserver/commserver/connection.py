@@ -6,11 +6,15 @@ class Connection:
         self.ip = ip
         self.port = port
         self.max_connection = max_connection
-        self.socket = socket.socket()
 
     def __enter__(self):
-        self.socket.bind((self.ip, self.port))
-        self.socket.listen(self.max_connection)
+        addr = ("", self.port)
+        if socket.has_dualstack_ipv6():
+            self.socket = socket.create_server(addr, family=socket.AF_INET6, backlog=self.max_connection,
+                                               reuse_port=True, dualstack_ipv6=True)
+        else:
+            self.socket = socket.create_server(addr)
+
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
