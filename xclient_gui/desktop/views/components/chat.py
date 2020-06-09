@@ -2,7 +2,8 @@ import datetime
 
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
-    QListWidgetItem
+    QListWidgetItem, QPlainTextEdit
+from PyQt5.QtCore import Qt
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
 
@@ -24,8 +25,9 @@ class NewMessageInput(QWidget):
         self.create_gui()
 
     def create_message_input(self):
-        # TODO change to QTextPlainEdit
-        return QLineEdit()
+        text_edit = QPlainTextEdit()
+        text_edit.setMaximumHeight(60)
+        return text_edit
 
     def send_new_message(self):
         text = self.message_input.text()
@@ -43,6 +45,7 @@ class NewMessageInput(QWidget):
 
     def create_push_button(self):
         button = QPushButton(">")
+        button.setMaximumWidth(50)
         button.clicked.connect(self.handle_button_clicked)
         return button
 
@@ -54,6 +57,7 @@ class NewMessageInput(QWidget):
         box_layout.addWidget(self.message_input)
         box_layout.addWidget(push_button)
 
+        box_layout.setSpacing(10)
         self.setLayout(box_layout)
 
     def reset_items(self):
@@ -66,6 +70,7 @@ class Chat(QWidget):
         self.client = client
         self.new_message_input = None
         self.chat_box_layout = QVBoxLayout()
+        self.chat_box_layout.setSpacing(15)
 
         self.messages = MessagesList()
         self.set_default_messages_text()
@@ -94,7 +99,7 @@ class Chat(QWidget):
 
     def create_input(self):
         self.new_message_input = NewMessageInput(self.client)
-        self.chat_box_layout.addWidget(self.new_message_input)
+        self.chat_box_layout.addWidget(self.new_message_input, alignment=Qt.AlignBottom)
 
     def remove_input(self):
 
