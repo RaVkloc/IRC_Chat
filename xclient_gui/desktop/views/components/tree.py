@@ -12,7 +12,7 @@ class Tree(QTreeWidget):
 
         self.setHeaderLabel("Rooms")
 
-        self.itemClicked.connect(self.on_item_clicked)
+        self.itemDoubleClicked.connect(self.on_item_clicked)
         self.get_room_list()
         self.show()
 
