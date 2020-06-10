@@ -1,7 +1,9 @@
 import datetime
 
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
-    QListWidgetItem
+    QListWidgetItem, QPlainTextEdit
+from PyQt5.QtCore import Qt
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
 
@@ -23,8 +25,9 @@ class NewMessageInput(QWidget):
         self.create_gui()
 
     def create_message_input(self):
-        # TODO change to QTextPlainEdit
-        return QLineEdit()
+        text_edit = QPlainTextEdit()
+        text_edit.setMaximumHeight(60)
+        return text_edit
 
     def send_new_message(self):
         text = self.message_input.text()
@@ -42,6 +45,7 @@ class NewMessageInput(QWidget):
 
     def create_push_button(self):
         button = QPushButton(">")
+        button.setMaximumWidth(50)
         button.clicked.connect(self.handle_button_clicked)
         return button
 
@@ -53,6 +57,7 @@ class NewMessageInput(QWidget):
         box_layout.addWidget(self.message_input)
         box_layout.addWidget(push_button)
 
+        box_layout.setSpacing(10)
         self.setLayout(box_layout)
 
     def reset_items(self):
@@ -65,6 +70,7 @@ class Chat(QWidget):
         self.client = client
         self.new_message_input = None
         self.chat_box_layout = QVBoxLayout()
+        self.chat_box_layout.setSpacing(15)
 
         self.messages = MessagesList()
         self.set_default_messages_text()
@@ -74,12 +80,15 @@ class Chat(QWidget):
         self.setLayout(self.chat_box_layout)
 
     def set_default_messages_text(self):
+        # TODO move strings to utils
         self.messages.addItem("Choose room to start chat.")
 
-    def handle_joining_room(self):
+    def handle_joining_room(self, room_name):
         self.messages.clear()
-        self.messages.addItem("Witaj na kanale.\nLista aktywnych użytkowników: Jan Kowalski, Pan Zbysiu, Zenek")
-        self.messages.addItem("_____________________________________________________")
+        # TODO move strings to utils
+        self.messages.addItem(f"Welcome to the {room_name} channel.")
+        self.messages.addItem("")
+
         self.reset_input()
 
     def reset_input(self):
@@ -90,7 +99,7 @@ class Chat(QWidget):
 
     def create_input(self):
         self.new_message_input = NewMessageInput(self.client)
-        self.chat_box_layout.addWidget(self.new_message_input)
+        self.chat_box_layout.addWidget(self.new_message_input, alignment=Qt.AlignBottom)
 
     def remove_input(self):
 
@@ -105,6 +114,18 @@ class Chat(QWidget):
         date = datetime.datetime.fromtimestamp(float(timestamp))
         item = item_template.format(date.strftime("%d.%m.%Y %H:%M:%S"), user, text)
         self.messages.addItem(QListWidgetItem(item))
+
+    def show_list_users(self, list_users):
+
+        self.messages.addItem(QListWidgetItem(''))
+        # TODO move strings to utils
+        title = QListWidgetItem('Currently available users on this channel:')
+        title.setForeground(QColor("#07125c"))
+        self.messages.addItem(title)
+        users = QListWidgetItem('  ' + list_users)
+        users.setForeground(QColor("#363434"))
+        self.messages.addItem(users)
+        self.messages.addItem(QListWidgetItem(''))
 
     def leave_room(self):
         self.remove_input()

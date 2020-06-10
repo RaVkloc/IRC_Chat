@@ -56,9 +56,9 @@ class Client:
                     kwargs['client'] = self
                 try:
                     action.execute(**kwargs)
-                    response = action.get_action_result()
                 except DatabaseError as e:
-                    response = action.set_error_with_status(DatabaseException.message)
+                    action.set_error_with_status(DatabaseException.message)
 
+                response = action.get_action_result()
                 self.client_socket.sendall(response.convert_message_to_bytes())
                 self.logger.debug(f"({self.client_address}) <- " + response.get_complete_message().replace("\0", "\n"))
