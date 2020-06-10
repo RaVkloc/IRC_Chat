@@ -1,4 +1,5 @@
 import logging
+import socket
 
 from xserver.commserver.databaseconnection import DatabaseConnection
 from xserver.actionsserver.settings import TOKEN_KEY, AUTHENTICATION_ERROR
@@ -29,5 +30,19 @@ def login_required(f):
         self.user = user[0]
         logger.debug("User has been already logged.")
         return f(self, *args, **kwargs)
+
+    return inner
+
+
+def disconnect_handler(f):
+    def inner(self, *args, **kwargs):
+        from xserver.actionsserver.logout_action import LogoutAction
+        try:
+            return f(self, *args, **kwargs)
+        except socket.error as e:
+            self.server.clients.remove(self)
+            if self.user:
+                with DatabaseConnection() as cursor:
+                    LogoutAction.logout_user_in_db(self.user, cursor)
 
     return inner

@@ -6,6 +6,7 @@ from mysql.connector import DatabaseError
 from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
+from xserver.actionsserver.decorators import disconnect_handler
 from xserver.actionsserver.exceptions import DatabaseException
 from xserver.actionsserver.login_action import LoginAction
 from xserver.actionsserver.send_message_action import SendMessageAction
@@ -20,11 +21,13 @@ class Client:
         self.message = None
         self.logger = logging.getLogger("Client")
         self.server = server
+        self.user = None
 
     def start(self):
         recv_thread = threading.Thread(target=self.always_listen, daemon=True)
         recv_thread.start()
 
+    @disconnect_handler
     def always_listen(self):
         while True:
             self.message = Message()

@@ -15,16 +15,17 @@ class LogoutAction(ActionBase):
     @login_required
     def execute(self):
         with self.db_connect as cursor:
-            self._logout_user_in_db(self.user, cursor)
+            self.logout_user_in_db(self.user, cursor)
 
             self.set_status_ok()
             logger.debug("(userID={}Executing action LOGOUT finished SUCCESSFULLY.".format(self.user))
 
-    def _logout_user_in_db(self, user_id, cursor):
+    @classmethod
+    def logout_user_in_db(cls, user_id, cursor):
         query = "UPDATE users_user SET token = null, room_id_id = null WHERE id = {}"
 
-        logger.debug("(userID={})Executing query: ".format(self.user) + query + "\n\twith params: " + str(self.user))
+        logger.debug("(userID={})Executing query: ".format(user_id) + query + "\n\twith params: " + str(user_id))
 
         cursor.execute(query.format(user_id))
-        self.db_connect.connection.commit()
-        logger.debug("(userID={})Query executed successfully.".format(self.user))
+        cursor.connection.commit()
+        logger.debug("(userID={})Query executed successfully.".format(user_id))
