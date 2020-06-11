@@ -30,9 +30,9 @@ class NewMessageInput(QWidget):
         return text_edit
 
     def send_new_message(self):
-        text = self.message_input.text()
+        text = self.message_input.toPlainText()
         if len(text) > 0:
-            self.message_input.setText("")
+            self.message_input.clear()
 
             # TODO change the string to the modouledef param
             body = {
