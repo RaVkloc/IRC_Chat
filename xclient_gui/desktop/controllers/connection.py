@@ -17,7 +17,7 @@ class GUIClient(Client):
 
     def handle_receive(self, response: Response):
         self.slot.emit(response)
-        #print('RECIEVE', response.message.header, response.message.body)
+        # print('RECIEVE', response.message.header, response.message.body)
 
     def send(self):
         pass

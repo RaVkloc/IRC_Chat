@@ -7,6 +7,7 @@ class Dowolna(QObject):
 
 ob = Dowolna()
 
+
 class Foo(QObject):
     def connect_and_emit_trigger(self):
         # ob = Dowolna()
@@ -33,5 +34,3 @@ foo2.con()
 
 foo = Foo()
 foo.connect_and_emit_trigger()
-
-
