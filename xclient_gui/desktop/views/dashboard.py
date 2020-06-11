@@ -159,5 +159,5 @@ class Dashboard(QMainWindow):
         self.client.list_user()
 
     def set_widget_default_values(self):
-        self.setWindowTitle('Hello')
+        self.setWindowTitle("IRC Chat")
         self.resize(500, 500)
