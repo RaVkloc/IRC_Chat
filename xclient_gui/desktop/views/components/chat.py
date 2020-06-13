@@ -11,7 +11,7 @@ from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
 class MessagesList(QListWidget):
     def __init__(self):
         super().__init__()
-        self.setStyleSheet('background-color:gray')
+        # self.setStyleSheet('background-color:gray')
         self.setWordWrap(True)
         self.show()
 
