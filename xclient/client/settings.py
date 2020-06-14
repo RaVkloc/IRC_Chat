@@ -28,7 +28,8 @@ RESPONSE_TOKEN_KEY = 'Token'
 
 SUCCESS_RESPONSES = ['ok', ]
 TLS = True
-CERT_PATH = 'client.crt'
-KEY_PATH = 'client.key'
+ROOT_PATH = os.path.dirname(__file__)
+CERT_PATH = os.path.join(ROOT_PATH,'client.crt')
+KEY_PATH = os.path.join(ROOT_PATH, 'client.key')
 SERVER_CERT = os.path.abspath('../../xserver/coreserver/server.cert')
 
