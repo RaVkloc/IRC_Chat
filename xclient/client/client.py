@@ -1,8 +1,6 @@
 import json
 import threading
 import time
-from _thread import start_new_thread
-from functools import reduce
 
 from xclient.client.actions import Response
 from xclient.client.connection import Connection
