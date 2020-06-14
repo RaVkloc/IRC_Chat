@@ -41,12 +41,14 @@ class Tree(QTreeWidget):
         }
         self.client.join_room(body=body)
 
-        iterator = QTreeWidgetItemIterator(self)
-        transparent_brush = QBrush(QColor(255, 255, 255, 0))
-        while iterator.value():
-            item = iterator.value()
-            item.setBackground(col, transparent_brush)
-            iterator += 1
+        self.clear_highlight(col)
 
         brush = QBrush(QColor(255, 127, 25))
         it.setBackground(col, brush)
+
+    def clear_highlight(self, col=0, brush=QBrush()):
+        iterator = QTreeWidgetItemIterator(self)
+        while iterator.value():
+            item = iterator.value()
+            item.setBackground(col, brush)
+            iterator += 1

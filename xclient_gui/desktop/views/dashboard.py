@@ -64,6 +64,7 @@ class CentralWidget(QSplitter, BaseWidget):
                     self.tree.refresh_room_list()
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_LEAVEROOM_CODE:
                     self.tree.clear_selection()
+                    self.tree.clear_highlight()
                     self.chat.leave_room()
                 elif header[MESSAGE_ACTION] == MESSAGE_ACTION_LOGOUT_CODE:
                     self.on_logout.emit()
@@ -97,11 +98,8 @@ class Dashboard(QMainWindow):
         main_menu = self.menuBar()
         main_menu.setNativeMenuBar(False)
 
-        room = self.get_room_menu()
-        user = self.get_user_menu()
-
-        main_menu.addMenu(room)
-        main_menu.addMenu(user)
+        main_menu.addMenu(self.get_room_menu())
+        main_menu.addMenu(self.get_user_menu())
 
     def get_user_menu(self):
         user = QMenu(USER, self)
