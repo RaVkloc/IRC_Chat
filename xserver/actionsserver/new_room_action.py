@@ -5,6 +5,7 @@ from xserver.actionsserver.action_base import ActionBase
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_NEW_ROOM_CODE, MESSAGE_ACTION_NEW_ROOM_ROOM_NAME
 from xserver.actionsserver.decorators import login_required
 from xserver.actionsserver.exceptions import UniqueRoomException
+from xserver.actionsserver.settings import MAX_ROOM_NAME_LENGTH
 
 logger = logging.getLogger("NewRoomAction")
 
@@ -19,6 +20,10 @@ class NewRoomAction(ActionBase):
         logger.debug("(userID={})Executing action NEW_ROOM started.".format(self.user))
         room_name = self.msg.get_body_param(MESSAGE_ACTION_NEW_ROOM_ROOM_NAME)
         with self.db_connect as cursor:
+            if not self._check_room_name_length(room_name):
+                self.set_error_with_status("Given name is too long. Maximal length = " + str(MAX_ROOM_NAME_LENGTH))
+                return
+
             try:
                 self._check_if_room_exists(room_name, cursor)
                 self._add_room_to_db(room_name, self.user, cursor)
@@ -28,6 +33,9 @@ class NewRoomAction(ActionBase):
 
         self.set_status_ok()
         logger.debug("(userID={})Executing action NEW_ROOM finished SUCCESSFULLY.".format(self.user))
+
+    def _check_room_name_length(self, room_name):
+        return True if len(room_name) < MAX_ROOM_NAME_LENGTH else False
 
     def _check_if_room_exists(self, name, cursor):
         query = "SELECT * FROM chats_room WHERE name = '{}'"

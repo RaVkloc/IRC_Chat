@@ -1,11 +1,12 @@
 import hashlib
 import logging
 
-from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_REGISTER_LOGIN, \
-    MESSAGE_ACTION_REGISTER_PASSWORD
-
 from xserver.actionsserver.action_base import ActionBase
 from xserver.actionsserver.exceptions import UniqueUsernameException, ValidationPasswordException
+
+from xcomm.xcomm_moduledefs import MESSAGE_ACTION_REGISTER_CODE, MESSAGE_ACTION_REGISTER_LOGIN, \
+    MESSAGE_ACTION_REGISTER_PASSWORD
+from xserver.actionsserver.settings import MAX_USERNAME_LENGTH
 
 logger = logging.getLogger("RegisterAction")
 
@@ -22,6 +23,10 @@ class RegisterAction(ActionBase):
         logger.debug("Executing REGISTER action started.")
         username = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_LOGIN)
         password = self.msg.get_body_param(MESSAGE_ACTION_REGISTER_PASSWORD)
+
+        if not self._check_username_length(username):
+            self.set_error_with_status("Given name is too long. Maximal length = " + str(MAX_USERNAME_LENGTH))
+            return
 
         # Check if user with such nick does not already exists
         with self.db_connect as cursor:
@@ -49,6 +54,9 @@ class RegisterAction(ActionBase):
             logger.debug("Inserted username is not unique.")
             raise UniqueUsernameException()
         return cursor.fetchone() is None
+
+    def _check_username_length(self, username):
+        return True if len(username) < MAX_USERNAME_LENGTH else False
 
     def _validate_password(self, passwd):
         if len(passwd) > 5:
