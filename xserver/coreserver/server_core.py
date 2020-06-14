@@ -1,4 +1,5 @@
 import logging
+import ssl
 
 from xserver.commserver.client import Client
 from xserver.commserver.connection import Connection
@@ -22,15 +23,23 @@ class CoreServer(object):
         logging.basicConfig(**SERVER_LOG_CONFIG)
         self.logger = logging.getLogger("ServerCore")
 
+    def connect_socket(self, sock):
+        client_socket, client_addr = sock.accept()
+        connstream = ssl.wrap_socket(client_socket,
+                                     server_side=True,
+                                     certfile=SERVER_CERT,
+                                     keyfile=SERVER_KEY,
+                                     )
+        self.logger.debug(f"New client {client_addr} connected.")
+        new_client = Client(connstream, client_addr, self)
+        self.clients.append(new_client)
+        new_client.start()
+
     def run(self):
         with self.connection as conn:
             self.logger.debug(f"Server started ({SERVER_ADDRESS}:{SERVER_PORT})")
             while True:
-                client_socket, client_addr = conn.socket.accept()
-                self.logger.debug(f"New client {client_addr} connected.")
-                new_client = Client(client_socket, client_addr, self)
-                self.clients.append(new_client)
-                new_client.start()
+                self.connect_socket(conn.socket)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
+import os
+
 SERVER_ADDRESS = "localhost"
-SERVER_PORT = 1998
+SERVER_PORT = 6111
 SERVER_MAX_CONNECTION = 5
 
 SERVER_LOG_FILENAME = "../../server.log"
@@ -11,3 +13,7 @@ SERVER_LOG_CONFIG = {"filename": "../../server.log",
                      "datefmt": "%H:%M:%S %d/%m/%Y",
                      "level": "DEBUG"
                      }
+
+SERVER_CERT = 'server.cert'
+SERVER_KEY = 'server.key'
+TLS = True

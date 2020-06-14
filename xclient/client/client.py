@@ -29,15 +29,15 @@ class Client:
 
     @request_action()
     def login(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def register(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def join_room(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def leave_room(self, *args, **kwargs):
@@ -45,29 +45,29 @@ class Client:
 
     @request_action()
     def send_message(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def create_room(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def list_rooms(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def logout(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def list_user(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     def handle_receive(self, message):
         raise NotImplementedError
 
     def start(self):
-        with self.connection as conn:
+        with self.connection:
             thread_receive = threading.Thread(target=self.receive, daemon=True)
             thread_send = threading.Thread(target=self.send, daemon=True)
             thread_receive.start()

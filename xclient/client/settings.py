@@ -1,3 +1,5 @@
+import os
+
 BASE_HEADERS = {
     'ConLen': '',
     'Token': '',
@@ -25,3 +27,8 @@ RESPONSE_ACTION_HEADER = 'Action'
 RESPONSE_TOKEN_KEY = 'Token'
 
 SUCCESS_RESPONSES = ['ok', ]
+TLS = True
+CERT_PATH = 'client.crt'
+KEY_PATH = 'client.key'
+SERVER_CERT = os.path.abspath('../../xserver/coreserver/server.cert')
+

@@ -1,4 +1,7 @@
 import socket
+import ssl
+
+from xserver.coreserver.coreserver_moduledefs import TLS, SERVER_CERT, SERVER_KEY
 
 
 class Connection:
@@ -6,6 +9,9 @@ class Connection:
         self.ip = ip
         self.port = port
         self.max_connection = max_connection
+        if TLS:
+            self.context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+            self.context.load_cert_chain(certfile=SERVER_CERT, keyfile=SERVER_KEY)
 
     def __enter__(self):
         addr = ("", self.port)
@@ -19,3 +25,4 @@ class Connection:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.socket.close()
+
