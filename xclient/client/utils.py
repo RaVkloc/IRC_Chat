@@ -6,7 +6,7 @@ from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 
 
-class Reciver:
+class Receiver:
 
     @staticmethod
     def receive_headers(s: socket.socket):

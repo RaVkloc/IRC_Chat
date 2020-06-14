@@ -2,7 +2,7 @@ import socket
 import ssl
 
 from xclient.client.settings import TLS, CERT_PATH, SERVER_CERT, KEY_PATH
-from xclient.client.utils import Reciver
+from xclient.client.utils import Receiver
 from xcomm.message import Message
 from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
 
@@ -20,7 +20,7 @@ class Connection:
             self.context.verify_mode = ssl.CERT_REQUIRED
             self.context.load_verify_locations(SERVER_CERT)
             self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
-            self.secure_socket = self.context.wrap_socket(self.socket,server_side=False, server_hostname=self.ip)
+            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
 
         return self
 
@@ -40,9 +40,9 @@ class Connection:
     def receive(self):
         sock = self.get_socket()
         m = Message()
-        headers = Reciver.receive_headers(sock)
+        headers = Receiver.receive_headers(sock)
         m.set_header_bytes(headers)
         content_length = m.get_header_param(MESSAGE_CONTENT_LENGTH)
-        body = Reciver.receive_body(sock, content_length)
+        body = Receiver.receive_body(sock, content_length)
         m.set_body_bytes(body)
         return m
