@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem
+from PyQt5.QtGui import QColor, QBrush
+from PyQt5.QtWidgets import QTreeWidget, QTreeWidgetItem, QTreeWidgetItemIterator
 from PyQt5 import QtCore
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME
@@ -32,8 +32,6 @@ class Tree(QTreeWidget):
 
         for i in list_rooms:
             item = QTreeWidgetItem([i])
-            # item.setBackground(QColor(255, 0, 0, 127))
-
             self.addTopLevelItem(item)
 
     @QtCore.pyqtSlot(QTreeWidgetItem, int)
@@ -42,3 +40,13 @@ class Tree(QTreeWidget):
             MESSAGE_ACTION_JOIN_ROOM_ROOM_NAME: it.text(col)
         }
         self.client.join_room(body=body)
+
+        iterator = QTreeWidgetItemIterator(self)
+        transparent_brush = QBrush(QColor(255, 255, 255, 0))
+        while iterator.value():
+            item = iterator.value()
+            item.setBackground(col, transparent_brush)
+            iterator += 1
+
+        brush = QBrush(QColor(255, 127, 25))
+        it.setBackground(col, brush)
