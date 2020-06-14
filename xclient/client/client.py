@@ -41,7 +41,7 @@ class Client:
 
     @request_action()
     def leave_room(self, *args, **kwargs):
-        return self.connection.socket, self.token
+        return self.connection.get_socket(), self.token
 
     @request_action()
     def send_message(self, *args, **kwargs):
