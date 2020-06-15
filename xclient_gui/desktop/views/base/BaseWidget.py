@@ -7,6 +7,7 @@ class BaseWidget:
     @staticmethod
     def show_error_box(message):
         msg = QMessageBox()
+        msg.setWindowTitle("Error")
         msg.setText(message)
         msg.exec_()
 
