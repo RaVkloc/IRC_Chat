@@ -18,9 +18,6 @@ class ScreenController:
         self.screen.show()
 
     def show_login(self):
-        # Has to be set to None, cause if we logout and then log in again new token is not save
-        self.client.token = None
-
         login = LoginForm(self.client)
         login.open_next_screen.connect(self.show_dashboard)
         login.open_registration.connect(self.show_register)
