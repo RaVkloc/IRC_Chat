@@ -33,6 +33,7 @@ class Tree(QTreeWidget):
         for i in list_rooms:
             item = QTreeWidgetItem([i])
             self.addTopLevelItem(item)
+        self.setSortingEnabled(True)
 
     @QtCore.pyqtSlot(QTreeWidgetItem, int)
     def on_item_clicked(self, it, col):
