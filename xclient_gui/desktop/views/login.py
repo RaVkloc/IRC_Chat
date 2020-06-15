@@ -52,6 +52,7 @@ class LoginForm(QWidget, BaseWidget):
     def create_password_input(self, layout):
         label_password, self.lineEdit_password = FormInput(PASSWORD_INPUT_LABEL, PASSWORD_INPUT_PLACEHOLDER).get_input()
         self.lineEdit_password.setEchoMode(QLineEdit.Password)
+        self.lineEdit_password.returnPressed.connect(self.login)
 
         layout.addWidget(label_password, 1, 0)
         layout.addWidget(self.lineEdit_password, 1, 1)
