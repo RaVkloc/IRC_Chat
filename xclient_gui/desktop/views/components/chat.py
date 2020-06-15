@@ -1,8 +1,8 @@
 import datetime
 
+from PyQt5 import QtGui
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLineEdit, QHBoxLayout, QPushButton, \
-    QListWidgetItem, QPlainTextEdit
+from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidgetItem, QPlainTextEdit
 from PyQt5.QtCore import Qt
 
 from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
@@ -11,12 +11,24 @@ from xcomm.xcomm_moduledefs import MESSAGE_ACTION_SENDMESSAGE_NAME
 class MessagesList(QListWidget):
     def __init__(self):
         super().__init__()
-        # self.setStyleSheet('background-color:gray')
         self.setWordWrap(True)
         self.show()
 
 
-class NewMessageInput(QWidget):
+class MessageInput(QPlainTextEdit):
+
+    def __init__(self, parent_widget: QWidget):
+        super().__init__(parent_widget)
+        self.parent = parent_widget
+
+    def keyPressEvent(self, e: QtGui.QKeyEvent) -> None:
+        if e.key() == Qt.Key_Return and e.key() != Qt.Key_Shift:
+            self.parent.send_new_message()
+        else:
+            super().keyPressEvent(e)
+
+
+class NewMessageWidget(QWidget):
     def __init__(self, client):
         super().__init__()
         self.client = client
@@ -25,7 +37,9 @@ class NewMessageInput(QWidget):
         self.create_gui()
 
     def create_message_input(self):
-        text_edit = QPlainTextEdit()
+        # If pressing 'Enter' should send message uncomment line below.
+        # text_edit = MessageInput(self)
+        text_edit = QPlainTextEdit
         text_edit.setMaximumHeight(60)
         return text_edit
 
@@ -98,7 +112,7 @@ class Chat(QWidget):
             self.create_input()
 
     def create_input(self):
-        self.new_message_input = NewMessageInput(self.client)
+        self.new_message_input = NewMessageWidget(self.client)
         self.chat_box_layout.addWidget(self.new_message_input, alignment=Qt.AlignBottom)
 
     def remove_input(self):
