@@ -28,7 +28,7 @@ class Client:
             self.handle_receive(response)
 
     def clear_token_if_needed(self, message):
-        if message.get_header_param(RESPONSE_ACTION_HEADER) and \
+        if message.get_header_param(RESPONSE_ACTION_HEADER) == str(CLIENT_SEND_ACTIONS['logout']) and \
                 message.get_body_param(STATUS_KEY).lower() in SUCCESS_RESPONSES:
             self.token = None
 
