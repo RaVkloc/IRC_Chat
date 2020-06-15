@@ -3,7 +3,8 @@ from PyQt5.QtCore import QMargins
 from PyQt5.QtWidgets import QSplitter, QMainWindow, QAction, QMenu, QInputDialog
 
 from xclient_gui.desktop.utils.messages import SERVER_ERROR, USER, LOGOUT, LOGOUT_TIP, ROOM, NEW_ROOM, NEW_ROOM_TIP, \
-    LEAVE_ROOM, LEAVE_ROOM_TIP, REFRESH_LIST_ROOMS, REFRESH_LIST_ROOMS_TIP, NEW_ROOM_ENTER_NAME
+    LEAVE_ROOM, LEAVE_ROOM_TIP, REFRESH_LIST_ROOMS, REFRESH_LIST_ROOMS_TIP, NEW_ROOM_ENTER_NAME, USERS_LIST_IN_ROOM, \
+    USERS_LIST_IN_ROOM_TIP
 from xclient_gui.desktop.views.base.BaseWidget import BaseWidget
 from xclient_gui.desktop.views.components.chat import Chat
 from xclient_gui.desktop.views.components.tree import Tree
@@ -126,13 +127,14 @@ class Dashboard(QMainWindow):
         room_refresh_list_rooms.setStatusTip(REFRESH_LIST_ROOMS_TIP)
         room_refresh_list_rooms.triggered.connect(self.refresh_room_list)
 
-        room_refresh_list_rooms = QAction("Get users list", self)
-        room_refresh_list_rooms.setStatusTip(REFRESH_LIST_ROOMS_TIP)
-        room_refresh_list_rooms.triggered.connect(self.get_users_list)
+        room_user_list = QAction(USERS_LIST_IN_ROOM, self)
+        room_user_list.setStatusTip(USERS_LIST_IN_ROOM_TIP)
+        room_user_list.triggered.connect(self.get_users_list)
 
         room.addAction(room_new_room)
         room.addAction(room_leave_room)
         room.addAction(room_refresh_list_rooms)
+        room.addAction(room_user_list)
         return room
 
     def logout(self):

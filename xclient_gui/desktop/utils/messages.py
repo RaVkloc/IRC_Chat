@@ -26,3 +26,5 @@ LEAVE_ROOM = 'Leave room'
 LEAVE_ROOM_TIP = 'Leave from the current room.'
 REFRESH_LIST_ROOMS = 'Refresh rooms'
 REFRESH_LIST_ROOMS_TIP = 'Refresh the list of rooms.'
+USERS_LIST_IN_ROOM = "List users"
+USERS_LIST_IN_ROOM_TIP = "Show list of users in current room"
