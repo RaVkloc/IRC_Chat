@@ -1,5 +1,7 @@
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout, QMessageBox)
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit, QGridLayout)
 
 from xclient_gui.desktop.utils.messages import USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER, PASSWORD_INPUT_LABEL, \
     PASSWORD_INPUT_PLACEHOLDER, REGISTER_INCENTIVE, LOGIN
@@ -81,3 +83,9 @@ class LoginForm(QWidget, BaseWidget):
             MESSAGE_ACTION_LOGIN_PASSWORD: password
         }
         self.client.login(body=body)
+
+    def keyPressEvent(self, a0: QKeyEvent) -> None:
+        if a0.key() == Qt.Key_Return:
+            self.login()
+        else:
+            super().keyPressEvent()
