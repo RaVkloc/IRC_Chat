@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from PyQt5.QtCore import QMargins
+from PyQt5.QtCore import QMargins, QPoint
 from PyQt5.QtWidgets import QSplitter, QMainWindow, QAction, QMenu, QInputDialog
 
 from xclient_gui.desktop.utils.messages import SERVER_ERROR, USER, LOGOUT, LOGOUT_TIP, ROOM, NEW_ROOM, NEW_ROOM_TIP, \
@@ -158,5 +158,9 @@ class Dashboard(QMainWindow):
         self.client.list_user()
 
     def set_widget_default_values(self):
+        from PyQt5.QtGui import QGuiApplication
+
         self.setWindowTitle("IRC Chat")
-        self.resize(500, 500)
+
+        available_size = QGuiApplication.screenAt(QPoint(0, 0)).availableSize()
+        self.resize(available_size.width() * 0.3, available_size.height() * 0.3)
