@@ -13,6 +13,7 @@ class Client:
     def __init__(self, ip, port):
         self.connection = Connection(ip=ip, port=port)
         self.token = None
+        self.isStarted = False
 
     def send(self, *args, **kwargs):
         raise NotImplementedError
@@ -72,14 +73,21 @@ class Client:
         raise NotImplementedError
 
     def start(self):
-        with self.connection:
-            thread_receive = threading.Thread(target=self.receive, daemon=True)
-            thread_send = threading.Thread(target=self.send, daemon=True)
-            thread_receive.start()
-            thread_send.start()
-            time.sleep(1)
-            while threading.active_count() > 1:
-                pass
+        try:
+            with self.connection:
+                thread_receive = threading.Thread(target=self.receive, daemon=True)
+                thread_send = threading.Thread(target=self.send, daemon=True)
+                thread_receive.start()
+                thread_send.start()
+                time.sleep(1)
+                self.isStarted = True
+                while threading.active_count() > 1:
+                    pass
+        except ConnectionRefusedError:
+            # TODO handle this as error log
+            pass
+        finally:
+            self.isStarted = True
 
 
 class TerminalClient(Client):
