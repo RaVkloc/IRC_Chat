@@ -15,7 +15,7 @@ class ChangeRoomException(Exception):
 
 
 class InvalidLoginData(Exception):
-    message = "Unable to read user's data. Try again later."
+    message = "Invalid username or password."
 
 
 class InvalidTokenSave(Exception):
