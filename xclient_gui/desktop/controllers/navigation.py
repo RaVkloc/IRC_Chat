@@ -1,3 +1,4 @@
+from xclient_gui.desktop.views.connection_fail import ConnectionFail
 from xclient_gui.desktop.views.login import LoginForm
 from xclient_gui.desktop.views.register import RegisterForm
 from xclient_gui.desktop.views.dashboard import Dashboard
@@ -32,3 +33,7 @@ class ScreenController:
         register = RegisterForm(self.client)
         register.open_next_screen.connect(self.show_login)
         self.set_screen(register)
+
+    def show_connection_fail(self):
+        connection_fail = ConnectionFail()
+        self.set_screen(connection_fail)

@@ -15,14 +15,21 @@ class GUI:
 
     def start_client(self):
         self.client = GUIClient(SERVER_ADDRESS, SERVER_PORT)
-        thread_gui = threading.Thread(target=self.client.start, daemon=True)
-        thread_gui.start()
+        thread = threading.Thread(target=self.client.start, daemon=True)
+        thread.start()
 
     def start_gui(self):
         self.app = QApplication(sys.argv)
         self.controller = ScreenController(self.client)
-        self.controller.show_login()
-        # self.controller.show_dashboard()
+
+        while not self.client.isStarted:
+            pass
+
+        if self.client.connection.connected:
+            self.controller.show_login()
+        else:
+            self.controller.show_connection_fail()
+
         sys.exit(self.app.exec_())
 
     def start(self):
