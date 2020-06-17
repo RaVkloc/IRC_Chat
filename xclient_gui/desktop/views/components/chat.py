@@ -39,7 +39,7 @@ class NewMessageWidget(QWidget):
     def create_message_input(self):
         # If pressing 'Enter' should send message uncomment line below.
         # text_edit = MessageInput(self)
-        text_edit = QPlainTextEdit
+        text_edit = QPlainTextEdit()
         text_edit.setMaximumHeight(60)
         return text_edit
 
