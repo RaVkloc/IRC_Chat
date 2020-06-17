@@ -41,6 +41,7 @@ class NewMessageWidget(QWidget):
         # text_edit = MessageInput(self)
         text_edit = QPlainTextEdit()
         text_edit.setMaximumHeight(60)
+        text_edit.setPlaceholderText("Type your message here...")
         return text_edit
 
     def send_new_message(self):
