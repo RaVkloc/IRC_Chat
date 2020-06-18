@@ -87,4 +87,4 @@ class LoginForm(QWidget, BaseWidget):
         if a0.key() == Qt.Key_Return:
             self.login()
         else:
-            super().keyPressEvent()
+            super().keyPressEvent(a0)
