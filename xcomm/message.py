@@ -39,7 +39,7 @@ class Message:
         for param, value in self.body.items():
             complete_body += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"
 
-        complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body)) + DELIMITER_STR
+        complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body.encode())) + DELIMITER_STR
 
         for param, value in self.header.items():
             complete += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"
