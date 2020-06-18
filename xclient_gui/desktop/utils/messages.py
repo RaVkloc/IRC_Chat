@@ -1,3 +1,5 @@
+APP_TITLE = "IRC Chat"
+
 LOGIN = "Login"
 REGISTER = 'Register'
 
@@ -28,3 +30,10 @@ REFRESH_LIST_ROOMS = 'Refresh rooms'
 REFRESH_LIST_ROOMS_TIP = 'Refresh the list of rooms.'
 USERS_LIST_IN_ROOM = "List users"
 USERS_LIST_IN_ROOM_TIP = "Show list of users in current room"
+
+OK = 'OK'
+CONNECTION_FAILED_TRY_LATER = 'Connection to the server failed. Please try again later.'
+CONNECTION_FAILED = 'Connection failed'
+LOADING = 'Loading'
+CLOSE = 'Close'
+CLOSE_WINDOW_ARE_YOU_SURE = 'Do you really want to quit?'

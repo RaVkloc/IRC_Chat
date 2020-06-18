@@ -28,8 +28,8 @@ class Message:
     # destination must be self.header or self.body
     def __parse_bytes(self, msg_bytes, destination):
         for item in filter(lambda x: len(x), msg_bytes.split(DELIMITER_BYTE)):
-            splitted = item.decode().split(PARAM_VALUE_SEPARATOR)
-            destination[splitted[0]] = splitted[1]
+            split = item.decode().split(PARAM_VALUE_SEPARATOR)
+            destination[split[0]] = split[1]
 
     def convert_message_to_bytes(self):
         return self.get_complete_message().encode()
@@ -39,7 +39,7 @@ class Message:
         for param, value in self.body.items():
             complete_body += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"
 
-        complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body)) + DELIMITER_STR
+        complete = MESSAGE_CONTENT_LENGTH + PARAM_VALUE_SEPARATOR + str(len(complete_body.encode())) + DELIMITER_STR
 
         for param, value in self.header.items():
             complete += f"{param}{PARAM_VALUE_SEPARATOR}{value}{DELIMITER_STR}"

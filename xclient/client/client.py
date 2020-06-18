@@ -72,6 +72,11 @@ class Client:
         raise NotImplementedError
 
     def start(self):
+        try:
+            self.connection.connect()
+        except ConnectionRefusedError:
+            return
+
         with self.connection:
             thread_receive = threading.Thread(target=self.receive, daemon=True)
             thread_send = threading.Thread(target=self.send, daemon=True)

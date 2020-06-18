@@ -13,18 +13,25 @@ class Connection:
         self.ip = ip
         self.port = port
         self.socket = socket.socket()
+        self.secure_socket = None
+        self.connected = None
         self.client = client
 
+    def connect(self):
+        try:
+            self.socket.connect((self.ip, self.port))
+        except socket.error as e:
+            raise ConnectionRefusedError(e)
+
     def __enter__(self):
-        self.socket.connect((self.ip, self.port))
+
         if TLS:
             self.context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
             self.context.verify_mode = ssl.CERT_REQUIRED
             self.context.load_verify_locations(SERVER_CERT)
             self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
-            self.secure_socket = self.context.wrap_socket(self.socket, do_handshake_on_connect=False, server_side=False,
-                                                          server_hostname=SERVER_HOSTNAME)
-
+            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
+        self.connected = True
         return self
 
     def get_socket(self):
@@ -33,7 +40,6 @@ class Connection:
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.client.token:
             self.client.logout()
-        print(exc_type, exc_val, exc_tb)
 
         if TLS:
             self.secure_socket.close()
