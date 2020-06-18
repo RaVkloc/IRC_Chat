@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import (QApplication)
+from PyQt5.QtWidgets import QApplication
 import sys
 import threading
 
@@ -22,15 +22,8 @@ class GUI:
         self.app = QApplication(sys.argv)
         self.controller = ScreenController(self.client)
 
-        while not self.client.isStarted:
-            pass
-
-        if self.client.connection.connected:
-            self.controller.show_login()
-        else:
-            self.controller.show_connection_fail()
-
-        sys.exit(self.app.exec_())
+        self.controller.start()
+        self.app.exec_()
 
     def start(self):
         self.start_client()

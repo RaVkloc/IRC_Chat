@@ -13,15 +13,17 @@ class ConnectionFail(QWidget):
         self.create_gui()
 
     def create_gui(self):
-        layout = QGridLayout()
+        layout = QVBoxLayout()
         message = self.get_message()
         button = self.get_button()
 
-        layout.addWidget(message,  0, 2, 1, 5)
+        layout.addWidget(message)
+        layout.setAlignment(message, QtCore.Qt.AlignHCenter)
 
-        layout.addWidget(button, 1, 4, 1, 1)
+        layout.addWidget(button)
+        layout.setAlignment(button, QtCore.Qt.AlignHCenter)
+
         self.setLayout(layout)
-        self.setWindowTitle(CONNECTION_FAILED)
 
     def get_message(self):
         return QLabel(CONNECTION_FAILED_TRY_LATER)
