@@ -83,7 +83,6 @@ class Dashboard(QMainWindow):
         super().__init__()
         self.client = client
 
-        self.set_widget_default_values()
         self.create_menu()
 
         self.setCentralWidget(CentralWidget(self.client, self.on_logout))
@@ -156,11 +155,3 @@ class Dashboard(QMainWindow):
 
     def get_users_list(self):
         self.client.list_user()
-
-    def set_widget_default_values(self):
-        from PyQt5.QtGui import QGuiApplication
-
-        self.setWindowTitle("IRC Chat")
-
-        available_size = QGuiApplication.screenAt(QPoint(0, 0)).availableSize()
-        self.resize(available_size.width() * 0.3, available_size.height() * 0.3)
