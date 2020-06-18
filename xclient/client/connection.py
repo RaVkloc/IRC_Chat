@@ -13,28 +13,35 @@ class Connection:
         self.port = port
         self.socket = socket.socket()
         self.secure_socket = None
-        self.connected = False
+        self.connected = None
         self.client = client
 
-    def __enter__(self):
+    def connect(self):
         try:
             self.socket.connect((self.ip, self.port))
-            if TLS:
-                self.context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-                self.context.verify_mode = ssl.CERT_REQUIRED
-                self.context.load_verify_locations(SERVER_CERT)
-                self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
-                self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
-                self.connected = True
-                return self
         except socket.error as e:
             raise ConnectionRefusedError(e)
 
+    def __enter__(self):
+        # try:
+        # self.socket.connect((self.ip, self.port))
+        if TLS:
+            self.context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            self.context.verify_mode = ssl.CERT_REQUIRED
+            self.context.load_verify_locations(SERVER_CERT)
+            self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
+            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
+        self.connected = True
+        return self
+        # except socket.error:
+        #     self.connected = False
+        #     # raise ConnectionRefusedError("sdfssd")
 
     def get_socket(self):
         return self.secure_socket if TLS else self.socket
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        print(exc_type, exc_val, exc_tb)
         if self.client.token:
             self.client.logout()
 
