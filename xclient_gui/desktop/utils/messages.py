@@ -36,4 +36,4 @@ CONNECTION_FAILED_TRY_LATER = 'Connection to the server failed. Please try again
 CONNECTION_FAILED = 'Connection failed'
 LOADING = 'Loading'
 CLOSE = 'Close'
-CLOSE_WINDOW_ARE_YOU_SURE = 'Do you really want to quit window?'
+CLOSE_WINDOW_ARE_YOU_SURE = 'Do you really want to quit?'

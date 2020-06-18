@@ -31,7 +31,6 @@ class LoginForm(QWidget, BaseWidget):
             self.show_error_box(status)
 
     def create_gui(self):
-        self.set_widget_default_values()
 
         layout = QGridLayout()
         self.create_username_input(layout)
@@ -40,10 +39,6 @@ class LoginForm(QWidget, BaseWidget):
         self.create_register_encouragement(layout)
 
         self.setLayout(layout)
-
-    def set_widget_default_values(self):
-        self.setWindowTitle(LOGIN)
-        self.resize(500, 120)
 
     def create_username_input(self, layout):
         label_name, self.lineEdit_username = FormInput(USERNAME_INPUT_LABEL, USERNAME_INPUT_PLACEHOLDER).get_input()
