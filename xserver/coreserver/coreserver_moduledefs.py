@@ -24,3 +24,4 @@ SERVER_LOG_CONFIG = {"filename": find_unique_filename(),
 SERVER_CERT = 'server.cert'
 SERVER_KEY = 'server.key'
 TLS = True
+SERVER_HOSTNAME = 'localhost'

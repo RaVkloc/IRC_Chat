@@ -1,4 +1,9 @@
+cffi==1.14.0
+cryptography==2.9.2
 mysql-connector==2.2.9
+pycparser==2.20
+pyOpenSSL==19.1.0
 PyQt5==5.15.0
 PyQt5-sip==12.8.0
 PyQt5-stubs==5.14.2.2
+six==1.15.0

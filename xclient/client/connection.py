@@ -5,6 +5,7 @@ from xclient.client.settings import TLS, CERT_PATH, SERVER_CERT, KEY_PATH
 from xclient.client.utils import Receiver
 from xcomm.message import Message
 from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
+from xserver.coreserver.coreserver_moduledefs import SERVER_HOSTNAME
 
 
 class Connection:
@@ -21,7 +22,8 @@ class Connection:
             self.context.verify_mode = ssl.CERT_REQUIRED
             self.context.load_verify_locations(SERVER_CERT)
             self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
-            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
+            self.secure_socket = self.context.wrap_socket(self.socket, do_handshake_on_connect=False, server_side=False,
+                                                          server_hostname=SERVER_HOSTNAME)
 
         return self
 
