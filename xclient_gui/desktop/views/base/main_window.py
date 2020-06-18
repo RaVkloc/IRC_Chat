@@ -12,12 +12,12 @@ class MainWindow(QMainWindow):
         self.show_prevent_closing_box(event)
 
     def show_prevent_closing_box(self, event):
-        msg = QMessageBox()
-        msg.setWindowTitle(CLOSE)
-        msg.setText(CLOSE_WINDOW_ARE_YOU_SURE)
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        result = msg.exec_()
-        if result == QMessageBox.Ok:
+        result = QMessageBox.question(self,  # parent
+                                      CLOSE,  # window title
+                                      CLOSE_WINDOW_ARE_YOU_SURE,  # question
+                                      QMessageBox.No | QMessageBox.Yes)  # buttons
+
+        if result == QMessageBox.Yes:
             self.client.logout()
         else:
             event.ignore()
