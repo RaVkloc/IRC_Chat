@@ -116,3 +116,4 @@ dmypy.json
 
 .idea/
 trash/
+server.log*

@@ -11,7 +11,7 @@ from xclient.client.settings import CLIENT_SEND_ACTIONS, RESPONSE_ACTION_HEADER,
 class Client:
 
     def __init__(self, ip, port):
-        self.connection = Connection(ip=ip, port=port)
+        self.connection = Connection(ip=ip, port=port, client=self)
         self.token = None
         self.isStarted = False
 

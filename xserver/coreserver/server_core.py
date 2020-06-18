@@ -39,7 +39,10 @@ class CoreServer(object):
         with self.connection as conn:
             self.logger.debug(f"Server started ({SERVER_ADDRESS}:{SERVER_PORT})")
             while True:
-                self.connect_socket(conn.socket)
+                try:
+                    self.connect_socket(conn.socket)
+                except OSError:
+                    continue
 
 
 if __name__ == "__main__":

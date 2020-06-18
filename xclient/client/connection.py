@@ -8,12 +8,13 @@ from xcomm.xcomm_moduledefs import MESSAGE_CONTENT_LENGTH
 
 
 class Connection:
-    def __init__(self, ip, port):
+    def __init__(self, ip, port, client):
         self.ip = ip
         self.port = port
         self.socket = socket.socket()
         self.secure_socket = None
         self.connected = False
+        self.client = client
 
     def __enter__(self):
         try:
@@ -34,7 +35,9 @@ class Connection:
         return self.secure_socket if TLS else self.socket
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        print(exc_type, exc_val, exc_tb)
+        if self.client.token:
+            self.client.logout()
+
         if TLS:
             self.secure_socket.close()
         self.socket.close()
