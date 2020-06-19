@@ -28,6 +28,7 @@ class Connection:
             logger.debug("Connected SUCCESSFULLY.")
         except socket.error as e:
             logger.debug("Connection FAILED: " + str(e))
+            self.connected = False
             raise ConnectionRefusedError(e)
 
     def __enter__(self):
