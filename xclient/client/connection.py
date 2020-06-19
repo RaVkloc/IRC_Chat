@@ -30,7 +30,8 @@ class Connection:
             self.context.verify_mode = ssl.CERT_REQUIRED
             self.context.load_verify_locations(SERVER_CERT)
             self.context.load_cert_chain(certfile=CERT_PATH, keyfile=KEY_PATH)
-            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False, server_hostname=self.ip)
+            self.secure_socket = self.context.wrap_socket(self.socket, server_side=False,
+                                                          server_hostname=SERVER_HOSTNAME)
         self.connected = True
         return self
 
