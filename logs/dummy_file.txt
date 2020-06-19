@@ -1,0 +1,1 @@
+This file is just needed so git create a folder. In other cases users have to do it themselves.
