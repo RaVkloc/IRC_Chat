@@ -129,6 +129,7 @@ class Chat(QWidget):
         date = datetime.datetime.fromtimestamp(float(timestamp))
         item = item_template.format(date.strftime("%d.%m.%Y %H:%M:%S"), user, text)
         self.messages.addItem(QListWidgetItem(item))
+        self.messages.scrollToBottom()
 
     def show_list_users(self, list_users):
 

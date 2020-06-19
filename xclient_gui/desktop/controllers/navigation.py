@@ -4,7 +4,6 @@ from PyQt5.QtGui import QGuiApplication
 from xclient_gui.desktop.utils.messages import LOADING, CONNECTION_FAILED, REGISTER, LOGIN, APP_TITLE
 from xclient_gui.desktop.views.base.main_window import MainWindow
 from xclient_gui.desktop.views.connection_fail import ConnectionFail
-from xclient_gui.desktop.views.loader import Loader
 from xclient_gui.desktop.views.login import LoginForm
 from xclient_gui.desktop.views.register import RegisterForm
 from xclient_gui.desktop.views.dashboard import Dashboard
@@ -16,7 +15,12 @@ class ScreenController:
         self.screen = MainWindow(client)
 
     def start(self):
-        self.show_loader()
+        while self.client.connection.connected is None:
+            pass
+        if self.client.connection.connected:
+            self.show_login()
+        else:
+            self.show_connection_fail()
 
     def resize_window(self, width, height):
         available_size = QGuiApplication.screenAt(QPoint(0, 0)).availableSize()
@@ -50,11 +54,3 @@ class ScreenController:
     def show_connection_fail(self):
         connection_fail = ConnectionFail()
         self.set_screen(connection_fail, CONNECTION_FAILED, 0.25, 0.1)
-
-    def show_loader(self):
-        loader = Loader(self.client)
-        loader.handle_successful_connection.connect(self.show_login)
-        loader.handle_error_connection.connect(self.show_connection_fail)
-        self.set_screen(loader, LOADING, 0.1, 0.1)
-
-        loader.asynchronously_observe_client_connection()
