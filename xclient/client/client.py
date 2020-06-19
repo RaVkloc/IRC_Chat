@@ -1,11 +1,13 @@
 import json
 import threading
 import time
+import logging
 
 from xclient.client.actions import Response
 from xclient.client.connection import Connection
 from xclient.client.decorators import request_action
-from xclient.client.settings import CLIENT_SEND_ACTIONS, RESPONSE_ACTION_HEADER, STATUS_KEY, SUCCESS_RESPONSES
+from xclient.client.settings import CLIENT_SEND_ACTIONS, RESPONSE_ACTION_HEADER, STATUS_KEY, SUCCESS_RESPONSES, \
+    CLIENT_LOG_CONFIG
 
 
 class Client:
@@ -13,6 +15,12 @@ class Client:
     def __init__(self, ip, port):
         self.connection = Connection(ip=ip, port=port, client=self)
         self.token = None
+
+        self.__init_logger()
+
+    def __init_logger(self):
+        logging.basicConfig(**CLIENT_LOG_CONFIG)
+        self.logger = logging.getLogger("Client")
 
     def send(self, *args, **kwargs):
         raise NotImplementedError
@@ -73,6 +81,7 @@ class Client:
 
     def start(self):
         try:
+            self.logger.debug("Trying to connect to server")
             self.connection.connect()
         except ConnectionRefusedError:
             return
