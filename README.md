@@ -1,22 +1,18 @@
 # IRC_Chat
-Application is implementation of our own IRC chat protocol. Application is divided into two main parts server an client. It works in local network or can be deployed to external server.
+Application is implementation of our own IRC chat protocol. Application is divided into two main parts server and client. It works in local network or can be deployed to external server.
 Communication between client and server is encrypted. All important events are stored as logs.
 
 
 ## Requirements
 - Python>=3.8
-- mysql-connector==2.2.9
-- PyQt5==5.15.0
-- PyQt5-sip==12.8.0
-- PyQt5-stubs==5.14.2.2
+- more in file requirements.txt
 
 `pip install -r requirements.txt`
 
 
 ## Server
 Based on multi-theading architecture so it can serve many users at the same time.
-Support for Internet Protocol version 4 and 6. Using MySQL databse.
-Database keeps:
+Support for Internet Protocol version 4 and 6. Using MySQL databse tkat keeps:
 - users data (id, username, hashed password, token, current room)
 - room data (id, name, owner) 
 
@@ -27,7 +23,7 @@ There a two default clients available at this moment:
 - terminal,
 - Qt based desktop.
 
-You can easily add a new by creating a new class inherited by "client" and customize.
+You can easily add a new by creating a class inherited by "Client" and customize it.
 
 ## HOW TO START
 `git clone https://github.com/RaVkloc/IRC_Chat.git`
