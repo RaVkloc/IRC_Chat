@@ -28,7 +28,7 @@ class Client:
     def receive(self, *args, **kwargs):
         while True:
             message = self.connection.receive()
-            self.logger.debug("Received from server:", message.get_complete_message())
+            self.logger.debug(f"Received from server: {message.get_complete_message()}")
             response = Response(message)
             if not self.token:
                 self.token = response.get_token()
