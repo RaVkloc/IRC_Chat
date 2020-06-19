@@ -31,7 +31,7 @@ class Loader(QWidget):
         asyncio.run(self.listen_to_server_connection())
 
     async def listen_to_server_connection(self):
-        while self.client.connection is None:
+        while self.client.connection.connected is None:
             pass
         if self.client.connection.connected:
             self.handle_successful_connection.emit()
