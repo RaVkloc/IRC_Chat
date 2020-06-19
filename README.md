@@ -36,8 +36,8 @@ You can easily add a new by creating a new class inherited by "client" and custo
 You can set your own client/server values or use defaults:
 - IPv4/IPv6,
 - port,
-- certificates
-- pair of key
+- certificates,
+- pair of key.
 
 Params can be changed in `settings.py` files.
 
