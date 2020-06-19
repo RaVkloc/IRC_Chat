@@ -1,5 +1,6 @@
 import logging
 import ssl
+import threading
 
 from xserver.commserver.client import Client
 from xserver.commserver.connection import Connection
@@ -32,7 +33,8 @@ class CoreServer(object):
                                      )
         self.logger.debug(f"New client {client_addr} connected.")
         new_client = Client(connstream, client_addr, self)
-        self.clients.append(new_client)
+        with threading.Lock():
+            self.clients.append(new_client)
         new_client.start()
 
     def run(self):

@@ -1,5 +1,6 @@
 import logging
 import datetime
+import threading
 
 from xserver.actionsserver.action_base import ActionBase
 from xserver.actionsserver.decorators import login_required
@@ -23,8 +24,9 @@ class SendMessageAction(ActionBase):
                 room = self._get_room_by_user(self.user, cursor)
                 users = self._get_list_users_in_room(room, cursor)
                 current_username = self._get_username_by_id(cursor)
-                clients = self.get_client_list(users, server)
-                self.send_message(clients, current_username)
+                with threading.Lock():
+                    clients = self.get_client_list(users, server)
+                    self.send_message(clients, current_username)
             except NoActiveRoomException as e:
                 self.set_error_with_status(e.message)
                 return

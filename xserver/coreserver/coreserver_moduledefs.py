@@ -6,7 +6,7 @@ def find_unique_filename():
     return SERVER_LOG_FILENAME.format(num)
 
 
-SERVER_ADDRESS = "localhost"
+SERVER_ADDRESS = "51.38.191.101"
 SERVER_PORT = 6111
 SERVER_MAX_CONNECTION = 5
 
