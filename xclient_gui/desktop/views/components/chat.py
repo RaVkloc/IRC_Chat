@@ -101,7 +101,7 @@ class Chat(QWidget):
     def handle_joining_room(self, room_name):
         self.messages.clear()
         # TODO move strings to utils
-        self.messages.addItem(f"Welcome to the {room_name} channel.")
+        self.messages.addItem(f"Welcome to the {room_name}.")
         self.messages.addItem("")
 
         self.reset_input()
@@ -134,7 +134,7 @@ class Chat(QWidget):
 
         self.messages.addItem(QListWidgetItem(''))
         # TODO move strings to utils
-        title = QListWidgetItem('Currently available users on this channel:')
+        title = QListWidgetItem('Currently available users in this room:')
         title.setForeground(QColor("#07125c"))
         self.messages.addItem(title)
         users = QListWidgetItem('  ' + list_users)
