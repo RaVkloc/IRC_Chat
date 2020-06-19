@@ -1,8 +1,4 @@
 # IRC_Chat
-
-
-## Description
-
 Application is implementation of our own IRC chat protocol. Application is divided into two main parts server an client. It works in local network or can be deployed to external server.
 Communication between client and server is encrypted. All important events are stored as logs.
 
@@ -19,7 +15,7 @@ Communication between client and server is encrypted. All important events are s
 
 ## Server
 Based on multi-theading architecture so it can serve many users at the same time.
-Using MySQL databse. ipv4 v6 (przed database)
+Support for Internet Protocol version 4 and 6. Using MySQL databse.
 Database keeps:
 - users data (id, username, hashed password, token, current room)
 - room data (id, name, owner) 
@@ -52,13 +48,6 @@ Params can be changed in `settings.py` files.
 4. Client:
    - Desktop: python3.8  xclient_gui/desktop/main.py 
    - Terminal: python3.8 xclient/client/main.py
-
-
- 
- security issue
- new client creating flow
- 
- 
  
  
  For more information look at [Wiki](https://github.com/RaVkloc/IRC_Chat/wiki).
