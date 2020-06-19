@@ -28,6 +28,7 @@ class Client:
     def receive(self, *args, **kwargs):
         while True:
             message = self.connection.receive()
+            self.logger.debug("Received from server:", message.get_complete_message())
             response = Response(message)
             if not self.token:
                 self.token = response.get_token()
@@ -80,10 +81,11 @@ class Client:
         raise NotImplementedError
 
     def start(self):
+        self.logger.debug("Client starting...")
         try:
-            self.logger.debug("Trying to connect to server")
             self.connection.connect()
         except ConnectionRefusedError:
+            self.logger.debug("Some errors occurred. Unable to start properly.")
             return
 
         with self.connection:
