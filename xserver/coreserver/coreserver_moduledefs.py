@@ -10,7 +10,7 @@ SERVER_ADDRESS = "localhost"
 SERVER_PORT = 6111
 SERVER_MAX_CONNECTION = 5
 
-SERVER_LOG_FILENAME = "../../server.log{}"
+SERVER_LOG_FILENAME = "../../logs/server.log{}"
 SERVER_LOG_FORMAT = "%(asctime)s %(levelname)s [%(name)s]: %(message)s"
 SERVER_LOG_DATEFORMAT = "%H:%M:%S %m/%d/%Y"
 
