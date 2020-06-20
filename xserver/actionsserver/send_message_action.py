@@ -77,13 +77,7 @@ class SendMessageAction(ActionBase):
         message = message.convert_message_to_bytes()
 
         for client in client_list:
-            try:
-                client.client_socket.sendall(message)
-            except BrokenPipeError:
-                logger.error(f"Broken pipe error")
-                with threading.Lock():
-                    client_list.remove(client)
-
+            client.client_socket.sendall(message)
 
     def _get_username_by_id(self, cursor):
         query = "SELECT username FROM users_user WHERE id = {}"
