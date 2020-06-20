@@ -38,12 +38,12 @@ You can set your own client/server values or use defaults:
 Params can be changed in `settings.py` files.
 
 #### Run
-1. cd IRC_Chat
-2. export PYTHONPATH=.../IRC_Chat
-3. python3.8 xserver/coreserver/server_core.py
+1. `cd IRC_Chat`
+2. `export PYTHONPATH=.../IRC_Chat`
+3. `python3.8 xserver/coreserver/server_core.py`
 4. Client:
-   - Desktop: python3.8  xclient_gui/desktop/main.py 
-   - Terminal: python3.8 xclient/client/main.py
+   - Desktop: `python3.8  xclient_gui/desktop/main.py` 
+   - Terminal: `python3.8 xclient/client/main.py`
  
  
  For more information look at [Wiki](https://github.com/RaVkloc/IRC_Chat/wiki).
