@@ -17,13 +17,14 @@ class ScreenController:
     def start(self):
         while self.client.connection.connected is None:
             pass
+        print(self.client.connection.connected)
         if self.client.connection.connected:
             self.show_login()
         else:
             self.show_connection_fail()
 
     def resize_window(self, width, height):
-        available_size = QGuiApplication.screenAt(QPoint(0, 0)).availableSize()
+        available_size = QGuiApplication.primaryScreen().availableSize()
         self.screen.resize(available_size.width() * width, available_size.height() * height)
 
     def close_screen(self):
