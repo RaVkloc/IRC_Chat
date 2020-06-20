@@ -6,7 +6,7 @@ from xclient.client.settings import BASE_HEADERS, CLIENT_SEND_ACTIONS, TOKEN_KEY
 from xcomm.message import Message
 from xcomm.settings import DELIMITER_BYTE
 
-logger = logging.getLogger("Connection")
+logger = logging.getLogger("Utils")
 
 
 class Receiver:
