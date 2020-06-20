@@ -28,7 +28,7 @@ class Message:
     # destination must be self.header or self.body
     def __parse_bytes(self, msg_bytes, destination):
         for item in filter(lambda x: len(x), msg_bytes.split(DELIMITER_BYTE)):
-            split = item.decode().split(PARAM_VALUE_SEPARATOR)
+            split = item.decode().split(PARAM_VALUE_SEPARATOR, maxsplit=1)
             destination[split[0]] = split[1]
 
     def convert_message_to_bytes(self):
