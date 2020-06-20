@@ -17,7 +17,6 @@ class ScreenController:
     def start(self):
         while self.client.connection.connected is None:
             pass
-        print(self.client.connection.connected)
         if self.client.connection.connected:
             self.show_login()
         else:
