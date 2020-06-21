@@ -2,6 +2,9 @@
 Application is implementation of our own IRC chat protocol. Application is divided into two main parts server and client. It works in local network or can be deployed to external server.
 Communication between client and server is encrypted. All important events are stored as logs.
 
+<p align="center">
+  <img src="https://github.com/RaVkloc/IRC_Chat/blob/master/images/conversation.png" alt="Login widget"/>
+</p>
 
 ## Requirements
 - Python>=3.8
