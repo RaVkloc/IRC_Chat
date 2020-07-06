@@ -44,6 +44,7 @@ class LoginAction(ActionBase):
 
             token = str(uuid4())
             logger.debug("Generated token: " + token)
+            self.clear_room(result.id, self.db_connect)
             try:
                 self._add_user_token_to_db(result.username, token, cursor)
             except InvalidTokenSave as e:
@@ -84,3 +85,9 @@ class LoginAction(ActionBase):
         cursor.execute(query.format(user_token, username))
         self.db_connect.connection.commit()
         logger.debug("Query executed successfully.")
+
+    def clear_room(self, user_id, conn):
+        cursor = conn.cursor
+        query = "UPDATE users_user SET room_id_id = null WHERE id = {}"
+        cursor.execute(query.format(user_id))
+        conn.connection.commit()
