@@ -142,6 +142,7 @@ class Chat(QWidget):
         users.setForeground(QColor("#363434"))
         self.messages.addItem(users)
         self.messages.addItem(QListWidgetItem(''))
+        self.messages.scrollToBottom()
 
     def leave_room(self):
         self.remove_input()
