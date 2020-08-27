@@ -1,6 +1,5 @@
 import sys
 
-from PyQt5.QtCore import QTranslator, QLocale
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 from xclient_gui.qtclient.login import LoginWindow
